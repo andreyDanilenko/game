@@ -62,7 +62,42 @@
       </p>
       <button class="start-button" id="startButton">START SURVIVAL</button>
     </div>
-    
+
+    <!-- Экран завершения уровня -->
+    <div class="level-complete-screen" id="levelCompleteScreen" style="display: none;">
+      <div class="screen-content">
+        <h2 class="level-complete-title">Уровень пройден!</h2>
+        <div class="level-complete-name" id="levelCompleteName"></div>
+        
+        <div class="level-complete-stats" id="levelCompleteStats"></div>
+        
+        <div class="level-complete-buttons">
+          <button class="next-level-button" id="nextLevelButton">Следующий уровень</button>
+          <button class="restart-level-button" id="restartLevelButton">Переиграть уровень</button>
+          <button class="main-menu-button" id="mainMenuButton">Главное меню</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Экран победы в игре -->
+    <div class="win-screen" id="winScreen" style="display: none;">
+      <div class="screen-content">
+        <h2 class="win-title">ПОБЕДА!</h2>
+        <div class="win-subtitle">Вы прошли все уровни!</div>
+        
+        <div class="final-stats">
+          <div class="stat-item">Финальный счет: <span class="final-score">0</span></div>
+          <div class="stat-item">Пройдено уровней: <span class="levels-completed">0</span></div>
+          <div class="detailed-stats" id="finalStats"></div>
+        </div>
+        
+        <div class="win-buttons">
+          <button class="restart-game-button" id="restartGameButton">Начать заново</button>
+          <button class="main-menu-button" id="mainMenuWinButton">Главное меню</button>
+        </div>
+      </div>
+    </div>
+        
     <!-- Экран окончания игры -->
     <div class="game-over" id="gameOver">
       <h2 id="gameResult">GAME OVER</h2>

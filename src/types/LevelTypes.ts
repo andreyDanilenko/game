@@ -10,7 +10,6 @@ export interface LevelConfig {
   name: string;
   description: string;
   background: string;
-  zoom: number;
   gameSpeed: number;
   worldScale: number;
   duration: number; // секунды

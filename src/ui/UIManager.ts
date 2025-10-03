@@ -19,18 +19,30 @@ export class UIManager {
     zoomValue: document.getElementById('zoomValue')!,
     startButton: document.getElementById('startButton') as HTMLButtonElement,
     restartButton: document.getElementById('restartButton') as HTMLButtonElement,
+    menuButton: document.getElementById('menuButton') as HTMLButtonElement,
     zoomInBtn: document.getElementById('zoomInBtn') as HTMLButtonElement,
     zoomOutBtn: document.getElementById('zoomOutBtn') as HTMLButtonElement,
     zoomResetBtn: document.getElementById('zoomResetBtn') as HTMLButtonElement,
   };
 
-  updateScore(v: number): void { this.els.score.textContent = v.toString(); }
-  updateTime(v: number): void { this.els.time.textContent = Math.ceil(v).toString(); }
-  updateArmor(v: number): void { this.els.armor.textContent = v.toString(); }
-  updatePower(v: number): void { this.els.powerFill.style.width = `${v}%`; }
+  updateScore(v: number): void { 
+    this.els.score.textContent = v.toString(); 
+  }
+  
+  updateTime(v: number): void { 
+    this.els.time.textContent = Math.ceil(v).toString(); 
+  }
+  
+  updateArmor(v: number): void { 
+    this.els.armor.textContent = v.toString(); 
+  }
+  
+  updatePower(v: number): void { 
+    this.els.powerFill.style.width = `${v}%`; 
+  }
 
   showHud(show: boolean): void {
-    this.els.hud.style.display = show ? 'flex' : 'none';
+    this.els.hud.style.display = show ? 'block' : 'none';
     this.els.speedControl.style.display = show ? 'block' : 'none';
     this.els.zoomControl.style.display = show ? 'block' : 'none';
   }
@@ -63,6 +75,17 @@ export class UIManager {
 
   setZoomDisplay(value: number): void {
     this.els.zoomValue.textContent = value.toFixed(1) + 'x';
+  }
+
+  updateLevelInfo(levelName: string, progress: number): void {
+    const levelInfoElement = document.getElementById('levelInfo');
+    if (levelInfoElement) {
+      levelInfoElement.innerHTML = `
+        <div style="font-weight: bold; color: #00ff88;">${levelName}</div>
+        <div style="font-size: 12px;">Progress: ${Math.round(progress)}%</div>
+      `;
+      levelInfoElement.style.display = 'block';
+    }
   }
 
   getElements() {
