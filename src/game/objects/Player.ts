@@ -8,6 +8,7 @@ export class Player extends BaseObject {
   }
 
   update(gameSpeed: number): void {
+    console.log(gameSpeed);
     // Player position is controlled externally
   }
 

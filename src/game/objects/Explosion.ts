@@ -15,6 +15,8 @@ export class Explosion extends BaseObject {
   }
 
   update(gameSpeed: number): void {
+    console.log(gameSpeed);
+  
     this.life--;
     this.radius += (this.maxRadius - this.radius) * 0.1;
   }
