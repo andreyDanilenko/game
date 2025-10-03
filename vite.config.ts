@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite'
 
 export default defineConfig({
-  base: '/game/', // Важно: именно 'game' - имя вашего репозитория
+  base: './', // Важно: именно 'game' - имя вашего репозитория
   build: {
     // Оптимизации для игры
     target: 'es2015',
