@@ -4,7 +4,6 @@ export interface LevelObjective {
   description: string;
   current: number;
 }
-
 export interface LevelConfig {
   id: number;
   name: string;
@@ -12,7 +11,9 @@ export interface LevelConfig {
   background: string;
   gameSpeed: number;
   worldScale: number;
-  duration: number; // секунды
+  duration: number;
+  difficulty: 'easy' | 'medium' | 'hard';
+  music: string; // ← ДОБАВЛЯЕМ ID ТРЕКА
   objectives: LevelObjective[];
   spawnSettings: {
     stars: number;
@@ -20,5 +21,4 @@ export interface LevelConfig {
     asteroids: number;
     enemySpawnRate?: number;
   };
-  difficulty: 'easy' | 'medium' | 'hard';
 }
