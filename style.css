@@ -435,3 +435,80 @@
   margin: 10px;
   transition: all 0.3s ease;
 }
+
+
+.level-objectives {
+  margin-top: 10px;
+  max-height: 150px;
+  overflow-y: auto;
+}
+
+.objective {
+  display: flex;
+  align-items: center;
+  padding: 5px;
+  margin: 3px 0;
+  background: rgba(255,255,255,0.1);
+  border-radius: 5px;
+  border-left: 3px solid #00ff88;
+  transition: all 0.3s ease;
+}
+
+.objective.completed {
+  background: rgba(0,255,136,0.2);
+  border-left-color: #00ff88;
+}
+
+.objective.just-completed {
+  animation: pulse-glow 2s ease-in-out;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 5px #00ff88; }
+  50% { box-shadow: 0 0 20px #00ff88; }
+}
+
+.objective-icon {
+  font-size: 16px;
+  margin-right: 8px;
+}
+
+.objective-info {
+  flex: 1;
+}
+
+.objective-text {
+  font-size: 11px;
+  color: white;
+}
+
+.objective-progress {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.progress-bar {
+  flex: 1;
+  height: 4px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #00ff88;
+  transition: width 0.5s ease;
+}
+
+.progress-text {
+  font-size: 10px;
+  color: #00ff88;
+  min-width: 30px;
+}
+
+.objective-check {
+  color: #00ff88;
+  font-weight: bold;
+}

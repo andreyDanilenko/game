@@ -69,7 +69,7 @@ export class LevelSystem {
         return this.currentLevel;
     }
 
-  getCurrentLevel(): LevelConfig {
+  getCurrentLevel(): LevelConfig {    
     return this.currentLevel;
   }
 
@@ -122,7 +122,7 @@ export class LevelSystem {
     const allCompleted = this.currentLevel.objectives.every(
       obj => obj.current >= obj.target
     );
-
+    
     return {
       completed: allCompleted,
       objectives: this.currentLevel.objectives

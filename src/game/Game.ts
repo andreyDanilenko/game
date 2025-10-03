@@ -385,11 +385,13 @@ export class Game {
     this.ui.updateTime(this.gameTime);
     this.ui.updateArmor(this.player.armor);
     this.ui.updatePower(this.power);
+    // this.checkObjectiveCompletion()
   }
 
   private updateLevelUI(): void {
     const level = this.levelSystem.getCurrentLevel();
     const progress = this.levelSystem.getLevelProgress();
+    this.ui.updateLevelObjectives(level.objectives);
     this.ui.updateLevelInfo(level.name, progress);
   }
 
@@ -451,13 +453,12 @@ export class Game {
   }
 
   private update(): void {
-    if (!this.gameRunning) return;
+    if (!this.gameRunning) return;    
 
     this.world.update();
 
-    // ВРЕМЯ всегда идет с постоянной скоростью
     if (this.gameTime > 0 && !this.gameWon) {
-      this.gameTime -= 1 / 60; // Фиксированная скорость времени
+      this.gameTime -= 1 / 60;
       this.levelSystem.updateObjectiveProgress('time', 1/60);
       this.ui.updateTime(this.gameTime);
       
@@ -467,9 +468,8 @@ export class Game {
       }
     }
 
-    // POWER всегда заряжается с постоянной скоростью
     if (this.power < 100) {
-      this.power += 0.5; // Фиксированная скорость зарядки
+      this.power += 0.5;
       this.ui.updatePower(this.power);
     }
 
@@ -482,7 +482,6 @@ export class Game {
     this.stars.forEach(s => s.update(1.0));
     this.powerStars.forEach(p => p.update(1.0));
     
-    // АСТЕРОИДЫ двигаются с комбинированной скоростью (уровень + слайдер)
     this.asteroidSpeed = this.levelAsteroidSpeed * this.gameSpeed;
     this.asteroids.forEach(a => {
       a.update(this.asteroidSpeed, worldBounds.width, worldBounds.height);
@@ -533,9 +532,7 @@ export class Game {
 
   private checkLevelCompletion(): void {
     const completion = this.levelSystem.checkLevelCompletion();
-    
-    console.log('completion', completion);
-    
+        
     if (completion.completed) {
       this.completeLevel();
     } else {

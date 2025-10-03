@@ -1,3 +1,5 @@
+import { LevelObjective } from "../types/LevelTypes";
+
 export class UIManager {
   private els = {
     score: document.getElementById('score')!,
@@ -19,10 +21,11 @@ export class UIManager {
     zoomValue: document.getElementById('zoomValue')!,
     startButton: document.getElementById('startButton') as HTMLButtonElement,
     restartButton: document.getElementById('restartButton') as HTMLButtonElement,
-    menuButton: document.getElementById('menuButton') as HTMLButtonElement,
     zoomInBtn: document.getElementById('zoomInBtn') as HTMLButtonElement,
     zoomOutBtn: document.getElementById('zoomOutBtn') as HTMLButtonElement,
     zoomResetBtn: document.getElementById('zoomResetBtn') as HTMLButtonElement,
+
+    levelObjectives: document.getElementById('levelObjectives') as HTMLButtonElement,
   };
 
   updateScore(v: number): void { 
@@ -90,5 +93,77 @@ export class UIManager {
 
   getElements() {
     return this.els;
+  }
+
+
+  updateLevelObjectives(objectives: LevelObjective[]): void {
+    const container = this.els.levelObjectives;
+    
+    container.innerHTML = objectives.map(obj => {
+
+      console.log(' container.innerHTML ', obj);
+      if (obj.type === 'survive') return 
+
+      const isCompleted = obj.current >= obj.target;
+      const progress = Math.min((obj.current / obj.target) * 100, 100);
+      
+      return `
+        <div class="objective ${isCompleted ? 'completed' : ''}" 
+             data-type="${obj.type}">
+          <div class="objective-icon">${this.getObjectiveIcon(obj.type)}</div>
+          <div class="objective-info">
+            <div class="objective-text">${obj.description}</div>
+            <div class="objective-progress">
+              <div class="progress-bar">
+                <div class="progress-fill" style="width: ${progress}%"></div>
+              </div>
+              <span class="progress-text">${obj.current}/${obj.target}</span>
+            </div>
+          </div>
+          ${isCompleted ? '<div class="objective-check">✓</div>' : ''}
+        </div>
+      `;
+    }).join('');
+  }
+
+  // НОВЫЙ МЕТОД: Иконки для разных типов целей (масштабируемо)
+  private getObjectiveIcon(objectiveType: string): string {
+    const icons: Record<string, string> = {
+      'survive': '⏱️',
+      'collect': '⭐', 
+      'destroy': '💥',
+      'reach_score': '🏆',
+      'boss': '👾',
+      'power_star': '🔮'
+      // Легко добавлять новые типы целей
+    };
+    return icons[objectiveType] || '🎯';
+  }
+
+  // НОВЫЙ МЕТОД: Визуальные эффекты при выполнении цели
+  showObjectiveCompleteEffect(objectiveType: string): void {
+    const completedObjective = this.els.levelObjectives.querySelector(
+      `[data-type="${objectiveType}"]`
+    );
+    
+    if (completedObjective) {
+      // Добавляем класс для анимации
+      completedObjective.classList.add('just-completed');
+      
+      // Создаем частицы эффекта
+      this.createCompletionParticles(completedObjective);
+      
+      // Убираем класс через время
+      setTimeout(() => {
+        completedObjective.classList.remove('just-completed');
+      }, 2000);
+    }
+  }
+
+  // НОВЫЙ МЕТОД: Частицы для визуального эффекта
+  private createCompletionParticles(element: Element): void {
+    // Можно добавить систему частиц для эффектов выполнения
+    console.log(`🎉 Цель выполнена: ${element.getAttribute('data-type')}`);
+    // Здесь можно добавить реальные частицы/анимации
   }
 }
