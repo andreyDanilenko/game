@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Space Survival</title>
+</head>
+<body>
+  <div class="game-container">
+    <canvas id="gameCanvas" width="800" height="600"></canvas>
+    <div class="ui-overlay">
+      <div class="hud" id="hud" style="display: none;">
+        <div class="time-display">Time: <span id="time">60</span>s</div>
+        <div class="score-display">Score: <span id="score">0</span></div>
+        <div class="armor-display">Armor: <span id="armor">3</span></div>
+        <div class="power-display">Power:
+          <div class="power-bar">
+            <div class="power-fill" id="powerFill"></div>
+          </div>
+        </div>
+      </div>
+      <div class="speed-control" id="speedControl" style="display: none;">
+        <label for="speedSlider">Speed</label>
+        <input type="range" id="speedSlider" class="speed-slider" min="0.5" max="3" step="0.1" value="1">
+        <div class="speed-value" id="speedValue">1.0x</div>
+      </div>
+    </div>
+    <div class="start-screen" id="startScreen">
+      <h1 class="game-title">SPACE SURVIVAL</h1>
+      <div class="game-mode">Survival Mode - 60 Seconds</div>
+      <p class="instructions">Collect regular stars for points!<br>Collect POWER stars for special abilities!<br>Avoid asteroids or use your armor!</p>
+      <p class="features"><strong>Features:</strong><br>• POWER stars give you armor and explosion ability<br>• Asteroids bounce off screen edges<br>• Use SPACEBAR to explode all objects (costs power)<br>• Survive for 60 seconds to win!</p>
+      <button class="start-button" id="startButton">START SURVIVAL</button>
+    </div>
+    <div class="game-over" id="gameOver">
+      <h2 id="gameResult">GAME OVER</h2>
+      <div class="stats">
+        <div class="stat-item">Final Score: <span id="finalScore">0</span></div>
+        <div class="stat-item">Survival Time: <span id="survivalTime">0</span>s</div>
+        <div class="stat-item">Asteroids Destroyed: <span id="asteroidsDestroyed">0</span></div>
+      </div>
+      <button class="restart-button" id="restartButton">PLAY AGAIN</button>
+    </div>
+  </div>
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>
