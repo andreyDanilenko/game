@@ -14,19 +14,24 @@ export class Asteroid extends BaseObject {
     this.rotationSpeed = (Math.random() - 0.5) * 0.08;
   }
 
-  update(gameSpeed: number): void {
+  // Обновленный метод с динамическими границами
+  update(gameSpeed: number, worldWidth?: number, worldHeight?: number): void {
     this.x += this.vx * gameSpeed;
     this.y += this.vy * gameSpeed;
     this.rotation += this.rotationSpeed * gameSpeed;
     
-    // Bounce off edges
-    if (this.x - this.radius <= 0 || this.x + this.radius >= 800) {
+    // Используем переданные границы или значения по умолчанию
+    const boundsWidth = worldWidth || 800;
+    const boundsHeight = worldHeight || 600;
+    
+    // Bounce off edges с динамическими границами
+    if (this.x - this.radius <= 0 || this.x + this.radius >= boundsWidth) {
       this.vx = -this.vx;
-      this.x = Math.max(this.radius, Math.min(800 - this.radius, this.x));
+      this.x = Math.max(this.radius, Math.min(boundsWidth - this.radius, this.x));
     }
-    if (this.y - this.radius <= 0 || this.y + this.radius >= 600) {
+    if (this.y - this.radius <= 0 || this.y + this.radius >= boundsHeight) {
       this.vy = -this.vy;
-      this.y = Math.max(this.radius, Math.min(600 - this.radius, this.y));
+      this.y = Math.max(this.radius, Math.min(boundsHeight - this.radius, this.y));
     }
   }
 

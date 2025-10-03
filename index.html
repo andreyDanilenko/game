@@ -4,11 +4,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Space Survival</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="game-container">
     <canvas id="gameCanvas" width="800" height="600"></canvas>
+    
     <div class="ui-overlay">
+      <!-- HUD в левом верхнем углу -->
       <div class="hud" id="hud" style="display: none;">
         <div class="time-display">Time: <span id="time">60</span>s</div>
         <div class="score-display">Score: <span id="score">0</span></div>
@@ -19,19 +22,48 @@
           </div>
         </div>
       </div>
+      
+      <!-- Speed control в правом верхнем углу -->
       <div class="speed-control" id="speedControl" style="display: none;">
-        <label for="speedSlider">Speed</label>
+        <label for="speedSlider">Game Speed</label>
         <input type="range" id="speedSlider" class="speed-slider" min="0.5" max="3" step="0.1" value="1">
         <div class="speed-value" id="speedValue">1.0x</div>
       </div>
+      
+      <!-- Zoom control в правом верхнем углу под speed control -->
+      <div class="zoom-control" id="zoomControl" style="display: none;">
+        <label for="zoomSlider">Camera Zoom</label>
+        <input type="range" id="zoomSlider" class="zoom-slider" min="0.5" max="3.0" step="0.1" value="1.0">
+        <div class="zoom-value" id="zoomValue">1.0x</div>
+        <div class="zoom-buttons">
+          <button class="zoom-btn" id="zoomOutBtn">-</button>
+          <button class="zoom-btn" id="zoomResetBtn">Reset</button>
+          <button class="zoom-btn" id="zoomInBtn">+</button>
+        </div>
+      </div>
     </div>
+    
+    <!-- Стартовый экран -->
     <div class="start-screen" id="startScreen">
       <h1 class="game-title">SPACE SURVIVAL</h1>
       <div class="game-mode">Survival Mode - 60 Seconds</div>
-      <p class="instructions">Collect regular stars for points!<br>Collect POWER stars for special abilities!<br>Avoid asteroids or use your armor!</p>
-      <p class="features"><strong>Features:</strong><br>• POWER stars give you armor and explosion ability<br>• Asteroids bounce off screen edges<br>• Use SPACEBAR to explode all objects (costs power)<br>• Survive for 60 seconds to win!</p>
+      <p class="instructions">
+        Collect regular stars for points!<br>
+        Collect POWER stars for special abilities!<br>
+        Avoid asteroids or use your armor!
+      </p>
+      <p class="features">
+        <strong>Controls:</strong><br>
+        • Mouse/Touch: Move player<br>
+        • SPACEBAR: Explosion (costs power)<br>
+        • +/- or Mouse Wheel: Zoom camera<br>
+        • 0: Reset zoom<br>
+        • Survive 60 seconds to win!
+      </p>
       <button class="start-button" id="startButton">START SURVIVAL</button>
     </div>
+    
+    <!-- Экран окончания игры -->
     <div class="game-over" id="gameOver">
       <h2 id="gameResult">GAME OVER</h2>
       <div class="stats">
