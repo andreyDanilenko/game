@@ -12,8 +12,8 @@ export class SoundSystem {
     // Манифест звуков - легко расширять
     const soundManifest = {
       // Музыка уровней
-      music_level1: '/sounds/music/level1.mp3',
-      music_level2: '/sounds/music/level2.mp3',
+      music_level1: '/assets/base_track_2.mp3',
+      music_level2: '/assets/base_track_2.mp3',
       music_level3: '/sounds/music/level3.mp3',
       music_boss: '/sounds/music/boss.mp3',
       music_menu: '/sounds/music/menu.mp3',

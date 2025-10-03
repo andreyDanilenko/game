@@ -7,6 +7,7 @@ import { Explosion } from './objects/Explosion';
 import { Particle } from './objects/Particle';
 import { WorldSystem } from '../systems/WorldSystem';
 import { LevelSystem } from '../systems/LevelSystem';
+import { SoundSystem } from '../systems/SoundSystem';
 
 export class Game {
   private canvas = document.getElementById('gameCanvas') as HTMLCanvasElement;
@@ -38,11 +39,15 @@ export class Game {
   private mouseY = 300;
 
   private currentZoomLevel = 1.0;
+    private soundSystem: SoundSystem; // ← ДОБАВЛЯЕМ СИСТЕМУ ЗВУКА
+
 
   constructor() {
     this.player = new Player(400, 300, 20);
     this.world = new WorldSystem(this.canvas, this.ctx);
     this.levelSystem = new LevelSystem();
+    this.soundSystem = new SoundSystem(); // ← ИНИЦИАЛИЗИРУЕМ
+
     this.initEventListeners();
     this.setupZoomControls();
     this.ui.showStart(true);
@@ -102,9 +107,18 @@ export class Game {
   }
 
   private initEventListeners(): void {
+    this.ui.getElements().volumeSlider.addEventListener('input', (e) => {
+      const target = e.target as HTMLInputElement;
+      this.soundSystem.setVolume(parseFloat(target.value));
+    });
+    
+    this.ui.getElements().muteButton.addEventListener('click', () => {
+      this.soundSystem.toggleMute();
+    });
+
     this.ui.getElements().startButton.addEventListener('click', () => this.startNewGame());
     
-     this.ui.getElements().restartButton.addEventListener('click', () => {
+    this.ui.getElements().restartButton.addEventListener('click', () => {
       console.log('Restarting current level...');
       
       if (this.animationId) {
@@ -170,6 +184,9 @@ export class Game {
 
   private init(): void {
     const level = this.levelSystem.getCurrentLevel();
+        
+    this.soundSystem.playMusic(level.music);
+
     
     this.score = 0;
     this.gameTime = level.duration;
@@ -403,6 +420,9 @@ export class Game {
       if (Math.sqrt(dx * dx + dy * dy) < this.player.radius + s.radius) {
         this.stars.splice(i, 1);
         this.score += 10;
+
+        this.soundSystem.playEffect('collect_star');
+
         this.levelSystem.updateObjectiveProgress('star_collected', 1);
         this.levelSystem.updateObjectiveProgress('score', 10);
         this.createParticles(s.x, s.y, '#ffff00', 15);
@@ -600,6 +620,9 @@ export class Game {
   private completeLevel(): void {
       this.gameRunning = false;
       if (this.animationId) cancelAnimationFrame(this.animationId);
+
+      this.soundSystem.playEffect('game_over');
+      this.soundSystem.stopMusic();
       
       const completion = this.levelSystem.checkLevelCompletion();
       
@@ -747,6 +770,6 @@ export class Game {
     this.gameRunning = false;
     if (this.animationId) cancelAnimationFrame(this.animationId);
     
-    this.showLevelFailedScreen(); // Показываем экран провала уровня
+    this.showLevelFailedScreen(); 
   }
 }

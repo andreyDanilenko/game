@@ -10,7 +10,7 @@ export const LevelManifest: Record<number, LevelConfig> = {
     gameSpeed: 1.0,
     worldScale: 1.0,
     duration: 25,
-    music: '',
+    music: 'music_level1',
     difficulty: 'easy',
     objectives: [
       { type: 'survive', target: 25, description: "Выжить 25 секунд", current: 0 },

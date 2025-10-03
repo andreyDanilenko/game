@@ -26,6 +26,8 @@ export class UIManager {
     zoomResetBtn: document.getElementById('zoomResetBtn') as HTMLButtonElement,
 
     levelObjectives: document.getElementById('levelObjectives') as HTMLButtonElement,
+    volumeSlider: document.getElementById('volumeSlider') as HTMLButtonElement,
+    muteButton: document.getElementById('muteButton') as HTMLButtonElement,
   };
 
   updateScore(v: number): void { 
