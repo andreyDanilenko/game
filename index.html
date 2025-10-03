@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Space Survival</title>
+  <script type="module" crossorigin src="/game/assets/index-rHKzT7d0.js"></script>
+  <link rel="stylesheet" crossorigin href="/game/assets/index-D6Q59sN9.css">
+</head>
+<body>
+  <div class="game-container">
+    <canvas id="gameCanvas" width="800" height="600"></canvas>
+    
+    <div class="ui-overlay">
+      <!-- HUD в левом верхнем углу -->
+      <div class="hud" id="hud" style="display: none;">
+        <div class="time-display">Time: <span id="time">60</span>s</div>
+        <div class="score-display">Score: <span id="score">0</span></div>
+        <div class="armor-display">Armor: <span id="armor">3</span></div>
+        <div class="power-display">Power:
+          <div class="power-bar">
+            <div class="power-fill" id="powerFill"></div>
+          </div>
+        </div>
+        <!-- ДОБАВЛЯЕМ КОНТЕЙНЕР ДЛЯ ЦЕЛЕЙ УРОВНЯ -->
+        <div class="level-objectives" id="levelObjectives">
+          <!-- Динамически будет заполняться через JS -->
+        </div>
+      </div>
+      <!-- Speed control в правом верхнем углу -->
+      <div class="speed-control" id="speedControl" style="display: none;">
+        <label for="speedSlider">Game Speed</label>
+        <input type="range" id="speedSlider" class="speed-slider" min="0.5" max="3" step="0.1" value="1">
+        <div class="speed-value" id="speedValue">1.0x</div>
+      </div>
+      
+      <!-- Zoom control в правом верхнем углу под speed control -->
+      <div class="zoom-control" id="zoomControl" style="display: none;">
+        <label for="zoomSlider">Camera Zoom</label>
+        <input type="range" id="zoomSlider" class="zoom-slider" min="0.5" max="3.0" step="0.1" value="1.0">
+        <div class="zoom-value" id="zoomValue">1.0x</div>
+        <div class="zoom-buttons">
+          <button class="zoom-btn" id="zoomOutBtn">-</button>
+          <button class="zoom-btn" id="zoomResetBtn">Reset</button>
+          <button class="zoom-btn" id="zoomInBtn">+</button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Стартовый экран -->
+    <div class="start-screen" id="startScreen">
+      <h1 class="game-title">SPACE SURVIVAL</h1>
+      <div class="game-mode">Survival Mode - 60 Seconds</div>
+      <p class="instructions">
+        Collect regular stars for points!<br>
+        Collect POWER stars for special abilities!<br>
+        Avoid asteroids or use your armor!
+      </p>
+      <p class="features">
+        <strong>Controls:</strong><br>
+        • Mouse/Touch: Move player<br>
+        • SPACEBAR: Explosion (costs power)<br>
+        • +/- or Mouse Wheel: Zoom camera<br>
+        • 0: Reset zoom<br>
+        • Survive 60 seconds to win!
+      </p>
+      <button class="start-button" id="startButton">START SURVIVAL</button>
+    </div>
+
+    <!-- Экран завершения уровня -->
+    <div class="level-complete-screen" id="levelCompleteScreen" style="display: none;">
+      <div class="screen-content">
+        <h2 class="level-complete-title">Уровень пройден!</h2>
+        <div class="level-complete-name" id="levelCompleteName"></div>
+        
+        <div class="level-complete-stats" id="levelCompleteStats"></div>
+        
+        <div class="level-complete-buttons">
+          <button class="next-level-button" id="nextLevelButton">Следующий уровень</button>
+          <button class="restart-level-button" id="restartLevelButton">Переиграть уровень</button>
+          <button class="main-menu-button" id="mainMenuButton">Главное меню</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Экран победы в игре -->
+    <div class="win-screen" id="winScreen" style="display: none;">
+      <div class="screen-content">
+        <h2 class="win-title">ПОБЕДА!</h2>
+        <div class="win-subtitle">Вы прошли все уровни!</div>
+        
+        <div class="final-stats">
+          <div class="stat-item">Финальный счет: <span class="final-score">0</span></div>
+          <div class="stat-item">Пройдено уровней: <span class="levels-completed">0</span></div>
+          <div class="detailed-stats" id="finalStats"></div>
+        </div>
+        
+        <div class="win-buttons">
+          <button class="restart-game-button" id="restartGameButton">Начать заново</button>
+          <button class="main-menu-button" id="mainMenuWinButton">Главное меню</button>
+        </div>
+      </div>
+    </div>
+        
+    <!-- Экран окончания игры -->
+    <div class="game-over" id="gameOver">
+      <h2 id="gameResult">GAME OVER</h2>
+      <div class="stats">
+        <div class="stat-item">Final Score: <span id="finalScore">0</span></div>
+        <div class="stat-item">Survival Time: <span id="survivalTime">0</span>s</div>
+        <div class="stat-item">Asteroids Destroyed: <span id="asteroidsDestroyed">0</span></div>
+      </div>
+      <button class="restart-button" id="restartButton">PLAY AGAIN</button>
+    </div>
+  </div>
+</body>
+</html>
