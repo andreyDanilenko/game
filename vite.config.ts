@@ -1,18 +1,21 @@
 import { defineConfig } from 'vite'
 
 export default defineConfig({
-  base: './', // Важно: именно 'game' - имя вашего репозитория
+  base: './',
   build: {
-    // Оптимизации для игры
     target: 'es2015',
     minify: 'terser',
     terserOptions: {
       compress: {
-        drop_console: true, // Убирает console.log в продакшене
+        drop_console: true,
       }
-    }
+    },
+    assetsInclude: ['**/*.mp3', '**/*.wav', '**/*.png', '**/*.jpg'],
+    assetsDir: 'assets',
   },
   server: {
     port: 3000
-  }
+  },
+  // Явно укажите публичную папку
+  publicDir: 'assets'
 })
