@@ -62,10 +62,10 @@ export class WorldSystem {
     this.ctx.restore();
   }
 
-  update(): void {
+  update(): void {    
     this.scale += (this.targetScale - this.scale) * 0.1;
     this.worldWidth = this.baseWidth * this.scale;
-    this.worldHeight = this.baseHeight * this.scale;
+    this.worldHeight = this.baseHeight * this.scale;    
   }
 
   applyWorldTransform(): void {
@@ -77,7 +77,7 @@ export class WorldSystem {
     this.ctx.scale(uniformScale, uniformScale);
     const offsetX = (this.canvas.width / uniformScale - this.worldWidth) / 2;
     const offsetY = (this.canvas.height / uniformScale - this.worldHeight) / 2;
-
+    
     this.ctx.translate(offsetX, offsetY);
   }
 

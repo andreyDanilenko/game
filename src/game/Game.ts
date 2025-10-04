@@ -107,15 +107,6 @@ export class Game {
   }
 
   private initEventListeners(): void {
-    // this.ui.getElements().volumeSlider.addEventListener('input', (e) => {
-    //   const target = e.target as HTMLInputElement;
-    //   this.soundSystem.setVolume(parseFloat(target.value));
-    // });
-    
-    // this.ui.getElements().muteButton.addEventListener('click', () => {
-    //   this.soundSystem.toggleMute();
-    // });
-
     this.ui.getElements().startButton.addEventListener('click', () => this.startNewGame());
     
     this.ui.getElements().restartButton.addEventListener('click', () => {
@@ -187,7 +178,6 @@ export class Game {
         
     this.soundSystem.playMusic(level.music);
 
-    
     this.score = 0;
     this.gameTime = level.duration;
     this.player.armor = 3;
@@ -221,6 +211,9 @@ export class Game {
     this.particles = [];
     this.explosions = [];
 
+    console.log('this.world.scale', this.world.scale);
+    
+
     this.spawnLevelObjects();
   }
 
@@ -230,6 +223,8 @@ export class Game {
     for (let i = 0; i < settings.stars; i++) this.createStar();
     for (let i = 0; i < settings.powerStars; i++) this.createPowerStar();
     for (let i = 0; i < settings.asteroids; i++) this.createBouncingAsteroid();
+
+    console.log('spawnLevelObjects this.world.scale', this.world.scale);
   }
 
   private createStar(): void {
@@ -473,6 +468,8 @@ export class Game {
   }
 
   private update(): void {
+        console.log('123', this.world.scale);
+
     if (!this.gameRunning) return;    
 
     this.world.update();
@@ -497,7 +494,7 @@ export class Game {
       width: this.world.worldWidth,
       height: this.world.worldHeight
     };
-
+    
     // ЗВЕЗДЫ двигаются с постоянной скоростью
     this.stars.forEach(s => s.update(1.0));
     this.powerStars.forEach(p => p.update(1.0));
@@ -510,7 +507,8 @@ export class Game {
     // ВЗРЫВЫ и ЧАСТИЦЫ с постоянной скоростью
     this.explosions.forEach(e => e.update(1.0));
     this.particles.forEach(p => p.update(1.0));
-
+    console.log(this.world.scale);
+    
     this.explosions = this.explosions.filter(e => e.life > 0);
     this.particles = this.particles.filter(p => p.life > 0);
 
@@ -545,6 +543,12 @@ export class Game {
   }
 
   private gameLoop = (): void => {
+    console.log('gameLoop');
+    if (!this.gameRunning) {
+      console.log('🚫 Игровой цикл пропускает кадр (gameRunning = false)');
+      this.animationId = null;
+      return;
+    }
     this.update();
     this.render();
     this.animationId = requestAnimationFrame(this.gameLoop);
@@ -768,7 +772,10 @@ export class Game {
   // Обновляем gameOver для проигрыша на уровне
   private gameOver(): void {
     this.gameRunning = false;
-    if (this.animationId) cancelAnimationFrame(this.animationId);
+    if (this.animationId)  { 
+      cancelAnimationFrame(this.animationId) 
+      this.animationId = null;
+    };
     
     this.showLevelFailedScreen(); 
   }
