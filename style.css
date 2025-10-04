@@ -5,6 +5,7 @@
     }
     
     body {
+        position: relative;
         background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
         min-height: 100vh;
         display: flex;
@@ -42,7 +43,7 @@
         top: 20px;
         left: 20px;
         color: white;
-        font-size: 20px;
+        font-size: 12px;
         font-weight: bold;
         text-shadow: 0 0 10px #00ffff;
         background: rgba(0, 0, 0, 0.3);
@@ -265,9 +266,9 @@
     /* Добавьте это в конец вашего style.css */
 
 .zoom-control {
-    position: absolute;
-    top: 140px; /* Под speed control */
-    right: 20px;
+    position: fixed;
+    top: 20px; /* Под speed control */
+    right: 220px;
     background: rgba(0, 0, 0, 0.3);
     padding: 15px;
     border-radius: 15px;
@@ -438,7 +439,9 @@
 
 
 .level-objectives {
-  margin-top: 10px;
+  position: absolute;
+  top: 20px;
+  right: 20px;
   max-height: 150px;
   overflow-y: auto;
 }

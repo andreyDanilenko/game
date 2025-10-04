@@ -43,7 +43,7 @@ export class Game {
 
 
   constructor() {
-    this.player = new Player(400, 300, 20);
+    this.player = new Player(400, 600, 20);
     this.world = new WorldSystem(this.canvas, this.ctx);
     this.levelSystem = new LevelSystem();
     this.soundSystem = new SoundSystem(); // ← ИНИЦИАЛИЗИРУЕМ
@@ -107,14 +107,14 @@ export class Game {
   }
 
   private initEventListeners(): void {
-    this.ui.getElements().volumeSlider.addEventListener('input', (e) => {
-      const target = e.target as HTMLInputElement;
-      this.soundSystem.setVolume(parseFloat(target.value));
-    });
+    // this.ui.getElements().volumeSlider.addEventListener('input', (e) => {
+    //   const target = e.target as HTMLInputElement;
+    //   this.soundSystem.setVolume(parseFloat(target.value));
+    // });
     
-    this.ui.getElements().muteButton.addEventListener('click', () => {
-      this.soundSystem.toggleMute();
-    });
+    // this.ui.getElements().muteButton.addEventListener('click', () => {
+    //   this.soundSystem.toggleMute();
+    // });
 
     this.ui.getElements().startButton.addEventListener('click', () => this.startNewGame());
     

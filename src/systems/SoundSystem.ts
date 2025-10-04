@@ -12,12 +12,18 @@ export class SoundSystem {
     // Манифест звуков - легко расширять
     const soundManifest = {
       // Музыка уровней
-      music_level1: '/assets/base_track_2.mp3',
+      music_level1: '/assets/base_track_1.mp3',
       music_level2: '/assets/base_track_2.mp3',
-      music_level3: '/sounds/music/level3.mp3',
+      music_level3: '/assets/base_track_3.mp3',
+      music_level4: '/assets/base_track_4.mp3',
+      music_level5: '/assets/base_track_5.mp3',
+      music_level6: '/assets/base_track_6.mp3',
+      music_level7: '/assets/base_track_7.mp3',
+      music_level8: '/assets/base_track_8.mp3',
+      music_level9: '/assets/base_track_9.mp3',
+      music_level10: '/assets/base_track_10.mp3',
       music_boss: '/sounds/music/boss.mp3',
       music_menu: '/sounds/music/menu.mp3',
-      
       // Звуковые эффекты
       explosion: '/sounds/effects/explosion.wav',
       collect_star: '/sounds/effects/collect_star.wav',
