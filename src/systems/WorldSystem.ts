@@ -17,29 +17,28 @@ export class WorldSystem {
   }
 
   private updateWorldSize(): void {
-    // Ширина = 100% от ширины экрана
     const screenWidth = window.innerWidth;
     
-    // Высота = 80% от высоты экрана  
-    const screenHeight = window.innerHeight * 1;
-    
-
-
-
-    this.baseWidth = screenWidth;
-    this.baseHeight = screenHeight;
+    if (screenWidth < 1000) {
+      // Если экран меньше 1000px - пересчитываем
+      const screenHeight = window.innerHeight;
+      
+      this.baseWidth = screenWidth;
+      this.baseHeight = screenHeight;
+    } else {
+      // Если экран 1000px и больше - используем стандартные размеры
+      this.baseWidth = 800;
+      this.baseHeight = 600;
+    }
     
     this.worldWidth = this.baseWidth;
     this.worldHeight = this.baseHeight;
-
-    console.log( this.baseWidth , this.baseHeight);
-    
     
     // Обновляем размеры канваса
     this.canvas.width = this.worldWidth;
     this.canvas.height = this.worldHeight;
     
-    console.log(`World size: ${this.worldWidth}x${this.worldHeight}`);
+    console.log(`World size: ${this.worldWidth}x${this.worldHeight}, Screen: ${window.innerWidth}x${window.innerHeight}`);
   }
 
   private setupResizeListener(): void {
