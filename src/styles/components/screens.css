@@ -1,0 +1,213 @@
+.start-screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(10, 10, 26, 0.95);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    pointer-events: all;
+}
+
+.game-title {
+    color: white;
+    font-size: 48px;
+    font-weight: bold;
+    text-align: center;
+    text-shadow: 0 0 20px #ff00ff, 0 0 40px #ff00ff;
+    margin-bottom: 20px;
+}
+
+.game-mode {
+    color: #00ff88;
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-shadow: 0 0 10px #00ff88;
+}
+
+.start-button {
+    background: linear-gradient(45deg, #ff00ff, #00ffff);
+    color: white;
+    border: none;
+    padding: 15px 40px;
+    font-size: 20px;
+    font-weight: bold;
+    border-radius: 50px;
+    cursor: pointer;
+    margin-top: 30px;
+    pointer-events: all;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 20px rgba(255, 0, 255, 0.5);
+}
+
+.start-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 30px rgba(255, 0, 255, 0.8);
+}
+
+.instructions {
+    color: rgba(255, 255, 255, 0.8);
+    text-align: center;
+    margin-top: 20px;
+    font-size: 16px;
+    max-width: 80%;
+    line-height: 1.6;
+}
+
+.features {
+    color: rgba(255, 255, 255, 0.7);
+    text-align: center;
+    margin-top: 15px;
+    font-size: 14px;
+    max-width: 80%;
+    line-height: 1.4;
+}
+
+.game-over {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    pointer-events: all;
+}
+
+.game-over h2 {
+    text-align: center;
+    color: white;
+    font-size: 48px;
+    margin-bottom: 20px;
+    text-shadow: 0 0 20px #ff4444;
+}
+
+.stats {
+    color: white;
+    font-size: 24px;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.stat-item {
+    margin: 10px 0;
+}
+
+.restart-button {
+    background: linear-gradient(45deg, #00ff00, #ffff00);
+    color: #000;
+    border: none;
+    padding: 15px 40px;
+    font-size: 20px;
+    font-weight: bold;
+    border-radius: 50px;
+    cursor: pointer;
+    margin-top: 20px;
+    pointer-events: all;
+    transition: all 0.3s ease;
+}
+
+.restart-button:hover {
+    transform: scale(1.05);
+}
+
+.level-complete-screen,
+.win-screen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(10, 10, 26, 0.95);
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  text-align: center;
+  z-index: 100;
+}
+
+.screen-content {
+  background: rgba(0, 0, 0, 0.8);
+  padding: 40px;
+  border-radius: 20px;
+  border: 2px solid #00ff88;
+  max-width: 500px;
+}
+
+.level-complete-title {
+  color: #00ff88;
+  font-size: 36px;
+  margin-bottom: 20px;
+  text-shadow: 0 0 20px #00ff88;
+}
+
+.win-title {
+  color: #ffff00;
+  font-size: 48px;
+  margin-bottom: 10px;
+  text-shadow: 0 0 30px #ffff00;
+}
+
+.win-subtitle {
+  color: #00ff88;
+  font-size: 24px;
+  margin-bottom: 30px;
+}
+
+.level-complete-stats,
+.final-stats {
+  color: white;
+  font-size: 18px;
+  margin: 20px 0;
+  text-align: left;
+}
+
+.level-complete-stats div,
+.final-stats .stat-item {
+  margin: 10px 0;
+  padding: 5px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 5px;
+}
+
+.next-level-button,
+.restart-level-button,
+.restart-game-button {
+  background: linear-gradient(45deg, #00ff88, #00cc66);
+  color: black;
+  border: none;
+  padding: 15px 30px;
+  font-size: 18px;
+  font-weight: bold;
+  border-radius: 50px;
+  cursor: pointer;
+  margin: 10px;
+  transition: all 0.3s ease;
+}
+
+.next-level-button:hover,
+.restart-level-button:hover,
+.restart-game-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+}
+
+.main-menu-button {
+  background: linear-gradient(45deg, #ff66ff, #ff00ff);
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  font-size: 16px;
+  border-radius: 50px;
+  cursor: pointer;
+  margin: 10px;
+  transition: all 0.3s ease;
+}

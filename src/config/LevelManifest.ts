@@ -8,7 +8,7 @@ export const LevelManifest: Record<number, LevelConfig> = {
     description: "Освойтесь в космосе",
     background: "deep_space",
     gameSpeed: 1.0,
-    worldScale: 1.5,
+    worldScale: 1.0,
     duration: 25,
     music: 'music_level10',
     difficulty: 'easy',

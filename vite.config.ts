@@ -2,6 +2,7 @@ import { defineConfig } from 'vite'
 
 export default defineConfig({
   base: './',
+  assetsInclude: ['**/*.mp3', '**/*.wav', '**/*.png', '**/*.jpg'],
   build: {
     target: 'es2015',
     minify: 'terser',
@@ -10,12 +11,13 @@ export default defineConfig({
         drop_console: true,
       }
     },
-    assetsInclude: ['**/*.mp3', '**/*.wav', '**/*.png', '**/*.jpg'],
     assetsDir: 'assets',
   },
   server: {
     port: 3000
   },
-  // Явно укажите публичную папку
-  publicDir: 'assets'
+  publicDir: 'assets',
+  css: {
+    devSourcemap: true
+  }
 })
