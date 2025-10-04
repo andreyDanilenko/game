@@ -16,7 +16,7 @@ export const LevelManifest: Record<number, LevelConfig> = {
       { type: 'survive', target: 25, description: "Выжить 25 секунд", current: 0 },
       { type: 'collect', target: 8, description: "Собрать 8 звезд", current: 0 }
     ],
-    spawnSettings: { stars: 6, powerStars: 2, asteroids: 10 }
+    spawnSettings: { stars: 6, powerStars: 2, asteroids: 5 }
   },
   2: {
     id: 2,
