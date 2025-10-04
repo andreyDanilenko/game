@@ -26,7 +26,7 @@ export const LevelManifest: Record<number, LevelConfig> = {
     gameSpeed: 1.1,
     worldScale: 1.1,
     duration: 30,
-    music: 'music_level10',
+    music: 'music_level9',
     difficulty: 'easy',
     objectives: [
       { type: 'survive', target: 30, description: "Выжить 30 секунд", current: 0 },
@@ -43,7 +43,7 @@ export const LevelManifest: Record<number, LevelConfig> = {
     gameSpeed: 1.0,
     worldScale: 1.2,
     duration: 35,
-    music: 'music_level10',
+    music: 'music_level8',
     difficulty: 'easy',
     objectives: [
       { type: 'collect', target: 20, description: "Собрать 20 звезд", current: 0 },
@@ -75,7 +75,7 @@ export const LevelManifest: Record<number, LevelConfig> = {
     gameSpeed: 1.1,
     worldScale: 1.3,
     duration: 35,
-    music: 'music_level7',
+    music: 'music_level6',
     difficulty: 'easy',
     objectives: [
       { type: 'destroy', target: 10, description: "Уничтожить 10 астероидов", current: 0 },
@@ -91,7 +91,7 @@ export const LevelManifest: Record<number, LevelConfig> = {
     gameSpeed: 1.3,
     worldScale: 1.2,
     duration: 30,
-    music: 'music_level4',
+    music: 'music_level5',
     difficulty: 'easy',
     objectives: [
       { type: 'survive', target: 30, description: "Выжить 30 секунд", current: 0 },
@@ -126,7 +126,7 @@ export const LevelManifest: Record<number, LevelConfig> = {
     gameSpeed: 1.4,
     worldScale: 1.6,
     duration: 50,
-    music: 'music_level2',
+    music: 'music_level3',
     difficulty: 'medium',
     objectives: [
       { type: 'survive', target: 50, description: "Выжить 50 секунд", current: 0 },

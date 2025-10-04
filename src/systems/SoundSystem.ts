@@ -22,8 +22,8 @@ export class SoundSystem {
       music_level8: '/assets/base_track_8.mp3',
       music_level9: '/assets/base_track_9.mp3',
       music_level10: '/assets/base_track_10.mp3',
-      music_boss: '/sounds/music/boss.mp3',
-      music_menu: '/sounds/music/menu.mp3',
+      // music_boss: '/sounds/music/boss.mp3',
+      // music_menu: '/sounds/music/menu.mp3',
       // Звуковые эффекты
       explosion: '/sounds/effects/explosion.wav',
       collect_star: '/sounds/effects/collect_star.wav',
