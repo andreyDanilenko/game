@@ -1,7 +1,7 @@
 export class WorldSystem {
-  public worldWidth: number = 300;
+  public worldWidth: number = 800;
   public worldHeight: number = 600;
-  public baseWidth: number = 300;
+  public baseWidth: number = 800;
   public baseHeight: number = 600;
   public scale: number = 1.0;
   public targetScale: number = 1.0;
@@ -12,8 +12,49 @@ export class WorldSystem {
   constructor(canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) {
     this.canvas = canvas;
     this.ctx = ctx;
+    this.updateWorldSize();
+    this.setupResizeListener();
   }
 
+  private updateWorldSize(): void {
+    // Ширина = 100% от ширины экрана
+    const screenWidth = window.innerWidth;
+    
+    // Высота = 80% от высоты экрана  
+    const screenHeight = window.innerHeight * 1;
+    
+
+
+
+    this.baseWidth = screenWidth;
+    this.baseHeight = screenHeight;
+    
+    this.worldWidth = this.baseWidth;
+    this.worldHeight = this.baseHeight;
+
+    console.log( this.baseWidth , this.baseHeight);
+    
+    
+    // Обновляем размеры канваса
+    this.canvas.width = this.worldWidth;
+    this.canvas.height = this.worldHeight;
+    
+    console.log(`World size: ${this.worldWidth}x${this.worldHeight}`);
+  }
+
+  private setupResizeListener(): void {
+    window.addEventListener('resize', () => {
+      this.updateWorldSize();
+    });
+    
+    window.addEventListener('orientationchange', () => {
+      setTimeout(() => {
+        this.updateWorldSize();
+      }, 100);
+    });
+  }
+
+  // Остальные методы без изменений
   setScale(newScale: number): void {
     this.targetScale = Math.max(0.5, Math.min(3.0, newScale));
   }
@@ -23,33 +64,24 @@ export class WorldSystem {
   }
 
   update(): void {
-    // Плавное изменение масштаба
     this.scale += (this.targetScale - this.scale) * 0.1;
-    
-    // Обновляем размеры мира
     this.worldWidth = this.baseWidth * this.scale;
     this.worldHeight = this.baseHeight * this.scale;
   }
 
+  applyWorldTransform(): void {
+    this.ctx.save();
+    const scaleX = this.canvas.width / this.worldWidth;
+    const scaleY = this.canvas.height / this.worldHeight;
+    const uniformScale = Math.min(scaleX, scaleY);
 
-    applyWorldTransform(): void {
-        this.ctx.save();
+    this.ctx.scale(uniformScale, uniformScale);
+    const offsetX = (this.canvas.width / uniformScale - this.worldWidth) / 2;
+    const offsetY = (this.canvas.height / uniformScale - this.worldHeight) / 2;
 
-        // Масштабируем весь мир, сохраняя пропорции
-        const scaleX = this.canvas.width / this.worldWidth;
-        const scaleY = this.canvas.height / this.worldHeight;
-        const uniformScale = Math.min(scaleX, scaleY);
+    this.ctx.translate(offsetX, offsetY);
+  }
 
-        this.ctx.scale(uniformScale, uniformScale);
-
-        // Центрируем мир с учетом нового масштаба
-        const offsetX = (this.canvas.width / uniformScale - this.worldWidth) / 2;
-        const offsetY = (this.canvas.height / uniformScale - this.worldHeight) / 2;
-
-        this.ctx.translate(offsetX, offsetY);
-    }
-
-  // Улучшаем конвертацию координат
   screenToWorld(screenX: number, screenY: number): { x: number, y: number } {
     const scaleX = this.canvas.width / this.worldWidth;
     const scaleY = this.canvas.height / this.worldHeight;
@@ -64,7 +96,6 @@ export class WorldSystem {
     };
   }
 
-  // Добавляем метод для получения видимой области
   getVisibleArea(): { x: number; y: number; width: number; height: number } {
     const scaleX = this.canvas.width / this.worldWidth;
     const scaleY = this.canvas.height / this.worldHeight;
@@ -81,7 +112,6 @@ export class WorldSystem {
     };
   }
 
-  // Проверяет, находится ли точка в пределах мира
   isInWorld(x: number, y: number): boolean {
     return x >= 0 && x <= this.worldWidth && y >= 0 && y <= this.worldHeight;
   }
@@ -96,7 +126,6 @@ export class WorldSystem {
   reset(): void {
     this.scale = 1.0;
     this.targetScale = 1.0;
-    this.worldWidth = this.baseWidth;
-    this.worldHeight = this.baseHeight;
+    this.updateWorldSize(); // Сбрасываем к текущему размеру экрана
   }
 }
