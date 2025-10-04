@@ -1,7 +1,7 @@
 export class WorldSystem {
-  public worldWidth: number = 800;
+  public worldWidth: number = 300;
   public worldHeight: number = 600;
-  public baseWidth: number = 800;
+  public baseWidth: number = 300;
   public baseHeight: number = 600;
   public scale: number = 1.0;
   public targetScale: number = 1.0;
