@@ -13,12 +13,13 @@ export interface LevelConfig {
   worldScale: number;
   duration: number;
   difficulty: 'easy' | 'medium' | 'hard';
-  music: string; // ← ДОБАВЛЯЕМ ID ТРЕКА
+  music: string; 
   objectives: LevelObjective[];
   spawnSettings: {
     stars: number;
     powerStars: number;
     asteroids: number;
     enemySpawnRate?: number;
+    deathAsteroids?: number;
   };
 }

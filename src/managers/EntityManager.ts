@@ -53,9 +53,12 @@ export class EntityManager {
   }
 
   updateAsteroids(speed: number, worldWidth?: number, worldHeight?: number): void {
+    const alive: Asteroid[] = [];
     this.asteroids.forEach(asteroid => {
       asteroid.update(speed, worldWidth, worldHeight);
+      if (!(asteroid as any).markedForRemoval) alive.push(asteroid);
     });
+    this.entities.set(ENTITY_TYPES.ASTEROIDS, alive);
   }
 
   updateParticles(speed: number): void {

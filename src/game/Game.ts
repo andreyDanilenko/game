@@ -13,6 +13,7 @@ import { EntityManager } from '../managers/EntityManager';
 import { ENTITY_TYPES } from '../constants/gameConstants';
 import { ParticleSystem } from '../systems/ParticleSystem';
 import { InputController } from './controllers/InputController';
+import { SmartAsteroid } from './objects/SmartAsteroid';
 
 export class Game {
   private canvas = document.getElementById('gameCanvas') as HTMLCanvasElement;
@@ -142,6 +143,9 @@ export class Game {
     for (let i = 0; i < settings.stars; i++) this.createStar();
     for (let i = 0; i < settings.powerStars; i++) this.createPowerStar();
     for (let i = 0; i < settings.asteroids; i++) this.createBouncingAsteroid();
+    
+    const deathCount = settings.deathAsteroids ?? 0;
+    for (let i = 0; i < deathCount; i++) this.createSmartAsteroid();
   }
 
   private createStar(): void {
@@ -150,6 +154,20 @@ export class Game {
     const y = Math.random() * (spawnArea.height - 200) + 100;
     const r = Math.random() * 8 + 4;
     this.entityManager.addEntity(ENTITY_TYPES.STARS, new Star(x, y, r));
+  }
+
+  private createSmartAsteroid(): void {
+    const spawnArea = this.world.getSpawnArea();
+    const size = Math.random() * 25 + 20;
+    const x = Math.random() * spawnArea.width;
+    const y = Math.random() * spawnArea.height;
+    const vx = (Math.random() - 0.5) * 5;
+    const vy = (Math.random() - 0.5) * 5;
+
+    this.entityManager.addEntity(
+      ENTITY_TYPES.ASTEROIDS,
+      new SmartAsteroid(x, y, size, vx, vy)
+    );
   }
 
   private createPowerStar(): void {
@@ -250,6 +268,8 @@ export class Game {
       const dy = asteroid.y - centerY;
       const distance = Math.sqrt(dx * dx + dy * dy);
       
+      if ((asteroid as any).immortal) return false; // <-- неуничтожаемый
+
       if (distance <= explosionRadius) {
         this.createExplosion(asteroid.x, asteroid.y, 15, '#ff6666');
         return true;
@@ -347,7 +367,11 @@ export class Game {
       const dx = asteroid.x - this.player.x;
       const dy = asteroid.y - this.player.y;
       if (Math.sqrt(dx * dx + dy * dy) < this.player.radius + asteroid.radius) {
-        this.handleAsteroidCollision(asteroid);
+          if (asteroid instanceof SmartAsteroid) {
+            this.gameOver();
+          } else {
+            this.handleAsteroidCollision(asteroid);
+          }
       }
     }
   }

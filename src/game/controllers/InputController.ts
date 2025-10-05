@@ -1,4 +1,3 @@
-// src/game/controllers/InputController.ts
 import { UIManager } from '../../ui/UIManager';
 import { Player } from '../objects/Player';
 import { WorldSystem } from '../../systems/WorldSystem';
@@ -10,6 +9,9 @@ import { Game } from '../Game';
  * Никакой логики игры внутри — только вызывает методы Game.
  */
 export class InputController {
+  disable() {
+    throw new Error('Method not implemented.');
+  }
   private canvas: HTMLCanvasElement;
   private game: Game;
   private ui: UIManager;
