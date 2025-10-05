@@ -12,6 +12,7 @@ import { LevelConfig } from '../types/LevelTypes';
 import { EntityManager } from '../managers/EntityManager';
 import { ENTITY_TYPES } from '../constants/gameConstants';
 import { ParticleSystem } from '../systems/ParticleSystem';
+import { InputController } from './controllers/InputController';
 
 export class Game {
   private canvas = document.getElementById('gameCanvas') as HTMLCanvasElement;
@@ -26,7 +27,7 @@ export class Game {
 
    
   private entityManager: EntityManager;
-  
+  private inputController: InputController;
 
   private score = 0;
   private gameTime = 60;
@@ -40,8 +41,6 @@ export class Game {
   private levelAsteroidSpeed = 1.0;
 
   private asteroidsDestroyed = 0;
-  private mouseX = 400;
-  private mouseY = 300;
   private currentZoomLevel = 1.0;
 
   constructor() {
@@ -53,43 +52,34 @@ export class Game {
     this.particleSystem = new ParticleSystem();
     this.entityManager = new EntityManager();
 
-    this.initEventListeners();
-    this.setupZoomControls();
     this.ui.showStart(true);
+
+
+    this.inputController = new InputController(this.canvas, this, this.ui, this.player, this.world);
   }
 
-  private setupZoomControls(): void {
-    const elements = this.ui.getElements();
-    
-    if (elements.zoomSlider) {
-      elements.zoomSlider.addEventListener('input', (e) => {
-        const target = e.target as HTMLInputElement;
-        const zoomValue = parseFloat(target.value);
-        this.setWorldZoom(zoomValue);
-        this.ui.setZoomDisplay(zoomValue);
-      });
-    }
 
-    if (elements.zoomInBtn) {
-      elements.zoomInBtn.addEventListener('click', () => {
-        this.setWorldZoom(this.currentZoomLevel + 0.5);
-      });
-    }
-
-    if (elements.zoomOutBtn) {
-      elements.zoomOutBtn.addEventListener('click', () => {
-        this.setWorldZoom(this.currentZoomLevel - 0.5);
-      });
-    }
-
-    if (elements.zoomResetBtn) {
-      elements.zoomResetBtn.addEventListener('click', () => {
-        this.resetWorldZoom();
-      });
-    }
+  public handleSpaceAction(): void {
+    if (this.gameRunning) this.explodeAllObjects();
   }
 
-  private setWorldZoom(zoomLevel: number): void {
+  public adjustZoom(delta: number): void {
+    this.setWorldZoom(this.currentZoomLevel + delta);
+  }
+
+  public resetZoom(): void {
+    this.resetWorldZoom();
+  }
+
+  public setGameSpeed(speed: number): void {
+    this.gameSpeed = speed;
+  }
+
+  public cancelAnimation(): void {
+    if (this.animationId) cancelAnimationFrame(this.animationId);
+  }
+
+  public setWorldZoom(zoomLevel: number): void {
     this.currentZoomLevel = Math.max(0.5, Math.min(3.0, zoomLevel));
     this.world.setScale(this.currentZoomLevel);
     
@@ -98,7 +88,7 @@ export class Game {
     }
   }
 
-  private resetWorldZoom(): void {
+  public resetWorldZoom(): void {
     this.currentZoomLevel = 1.0;
     this.world.setScale(1.0);
     
@@ -109,73 +99,6 @@ export class Game {
     if (this.ui.setZoomDisplay) {
       this.ui.setZoomDisplay(1.0);
     }
-  }
-
-  private initEventListeners(): void {
-    this.ui.getElements().startButton.addEventListener('click', () => this.startNewGame());
-    
-    this.ui.getElements().restartButton.addEventListener('click', () => {
-      console.log('Restarting current level...');
-      
-      if (this.animationId) {
-        cancelAnimationFrame(this.animationId);
-      }
-      
-      this.restartCurrentLevel();
-    });
-
-    this.ui.getElements().speedSlider.addEventListener('input', () => {
-      this.gameSpeed = this.ui.getSpeed();
-      this.ui.setSpeedDisplay(this.gameSpeed);
-    });
-
-    this.canvas.addEventListener('mousemove', (e) => {
-      const rect = this.canvas.getBoundingClientRect();
-      this.mouseX = e.clientX - rect.left;
-      this.mouseY = e.clientY - rect.top;
-      
-      const worldPos = this.world.screenToWorld(this.mouseX, this.mouseY);
-      this.player.x = Math.max(this.player.radius, 
-        Math.min(this.world.worldWidth - this.player.radius, worldPos.x));
-      this.player.y = Math.max(this.player.radius, 
-        Math.min(this.world.worldHeight - this.player.radius, worldPos.y));
-    });
-
-    this.canvas.addEventListener('wheel', (e) => {
-      e.preventDefault();
-      const zoomDelta = e.deltaY > 0 ? -0.2 : 0.2;
-      this.setWorldZoom(this.currentZoomLevel + zoomDelta);
-    });
-
-    document.addEventListener('keydown', (e) => {
-      if (e.code === 'Space' && this.gameRunning) {
-        this.explodeAllObjects();
-      }
-      if (e.code === 'Equal' || e.code === 'NumpadAdd') {
-        e.preventDefault();
-        this.setWorldZoom(this.currentZoomLevel + 0.5);
-      }
-      if (e.code === 'Minus' || e.code === 'NumpadSubtract') {
-        e.preventDefault();
-        this.setWorldZoom(this.currentZoomLevel - 0.5);
-      }
-      if (e.code === 'Digit0') {
-        this.resetWorldZoom();
-      }
-    });
-
-    this.canvas.addEventListener('touchmove', (e) => {
-      e.preventDefault();
-      const rect = this.canvas.getBoundingClientRect();
-      this.mouseX = e.touches[0].clientX - rect.left;
-      this.mouseY = e.touches[0].clientY - rect.top;
-      
-      const worldPos = this.world.screenToWorld(this.mouseX, this.mouseY);
-      this.player.x = Math.max(this.player.radius, 
-        Math.min(this.world.worldWidth - this.player.radius, worldPos.x));
-      this.player.y = Math.max(this.player.radius, 
-        Math.min(this.world.worldHeight - this.player.radius, worldPos.y));
-    });
   }
 
   private init(): void {
