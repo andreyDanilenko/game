@@ -15,8 +15,7 @@ import { ParticleSystem } from '../systems/ParticleSystem';
 import { InputController } from './controllers/InputController';
 import { SmartAsteroid } from './objects/SmartAsteroid';
 
-import { mountGameOverScreen } from '../svelte-mount';
-
+import { mountGameScreen } from '../components/GameOverScreen/GameOverScreenMount';
 
 export class Game {
   private canvas = document.getElementById('gameCanvas') as HTMLCanvasElement;
@@ -587,7 +586,6 @@ export class Game {
       cancelAnimationFrame(this.animationId);
     }
     
-    this.ui.showGameOver(false);
     this.ui.showHud(true);
     this.gameRunning = true;
     this.init();
@@ -620,90 +618,58 @@ export class Game {
     }
   }
 
-  // Метод показа экрана завершения уровня
-  private showLevelCompleteScreen(): void {
-    const level = this.levelSystem.getCurrentLevel();
-    const stats = this.levelSystem.getLevelStats();
-    
-    this.ui.getElements().survivalTime.textContent = level.duration.toString();
-    this.ui.getElements().finalScore.textContent = stats.score.toString();
-    this.ui.getElements().asteroidsDestroyed.textContent = stats.asteroidsDestroyed.toString();
-    this.ui.setGameResult(`УРОВЕНЬ ${level.id} ПРОЙДЕН!`, '#00ff88', '0 0 20px #00ff88');
-    
-    this.showNextLevelButton();
-  }
-
-  // Метод показа кнопки следующего уровня
-  private showNextLevelButton(): void {
-    const restartBtn = this.ui.getElements().restartButton;
-    restartBtn.textContent = 'СЛЕДУЮЩИЙ УРОВЕНЬ';
-    
-    const originalHandler = restartBtn.onclick;
-    restartBtn.onclick = () => {
-      this.startNextLevel();
-      restartBtn.onclick = originalHandler;
-      restartBtn.textContent = 'PLAY AGAIN';
-    };
-    
-    this.ui.showGameOver(true);
-  }
-
-  // Метод показа кнопки перезапуска уровня
-  private showRestartLevelButton(): void {
-    const restartBtn = this.ui.getElements().restartButton;
-    restartBtn.textContent = 'ПОВТОРИТЬ УРОВЕНЬ';
-    this.ui.showGameOver(true);
-  }
-
   // Метод показа экрана завершения игры
   private showGameCompleteScreen(): void {
     const stats = this.levelSystem.getLevelStats();
-    
-    this.ui.getElements().survivalTime.textContent = this.levelSystem.getCurrentLevel().duration.toString();
-    this.ui.getElements().finalScore.textContent = stats.score.toString();
-    this.ui.getElements().asteroidsDestroyed.textContent = stats.asteroidsDestroyed.toString();
-    this.ui.setGameResult('ВСЯ ИГРА ПРОЙДЕНА!', '#ffff00', '0 0 20px #ffff00');
-    
-    const restartBtn = this.ui.getElements().restartButton;
-    restartBtn.textContent = 'ГЛАВНОЕ МЕНЮ';
-    
-    const originalHandler = restartBtn.onclick;
-    restartBtn.onclick = () => {
-      this.returnToMainMenu();
-      restartBtn.onclick = originalHandler;
-      restartBtn.textContent = 'PLAY AGAIN';
-    };
-    
-    this.ui.showGameOver(true);
+
+    mountGameScreen({
+      type: 'gameComplete',
+      isVisible: true,
+      title: 'ВСЯ ИГРА ПРОЙДЕНА!',
+      finalScore: stats.score,
+      survivalTime: this.levelSystem.getCurrentLevel().duration,
+      asteroidsDestroyed: stats.asteroidsDestroyed,
+      onButtonClick: () => {
+        this.returnToMainMenu();
+      }
+    });
+  }
+
+  // Метод показа кнопки следующего уровня
+  private showLevelCompleteScreen(): void {
+    const level = this.levelSystem.getCurrentLevel();
+    const stats = this.levelSystem.getLevelStats();
+
+    mountGameScreen({
+      type: 'complete',
+      isVisible: true,
+      title: `УРОВЕНЬ ${level.id} ПРОЙДЕН!`,
+      finalScore: stats.score,
+      survivalTime: level.duration,
+      asteroidsDestroyed: stats.asteroidsDestroyed,
+      onButtonClick: () => {
+        this.startNextLevel();
+      }
+    });
   }
 
   // Метод показа экрана провала уровня
   private showLevelFailedScreen(): void {
     const level = this.levelSystem.getCurrentLevel();
     const stats = this.levelSystem.getLevelStats();
-    
 
-    mountGameOverScreen({
+    mountGameScreen({
+      type: 'failed',
       isVisible: true,
       title: `УРОВЕНЬ ${level.id} ПРОВАЛЕН`,
       finalScore: stats.score,
       survivalTime: Math.ceil(this.gameTime),
       asteroidsDestroyed: stats.asteroidsDestroyed,
-      onRestart: () => {
-        // Здесь должна быть логика перезапуска уровня
-        console.log('123');
-        
+      onButtonClick: () => {
+        this.cancelAnimation();
+        this.restartCurrentLevel();
       }
     });
-  // showGameOver({
-  //   title: `УРОВЕНЬ ${level.id} ПРОВАЛЕН`,
-  //   finalScore: stats.score,
-  //   survivalTime: Math.ceil(this.gameTime),
-  //   asteroidsDestroyed: stats.asteroidsDestroyed
-  // });
-    // showSvelteGameOver(true);
-    
-    // this.showRestartLevelButton();
   }
 
   // Метод начала игры
@@ -747,7 +713,6 @@ export class Game {
     this.player.y = 300;
     this.player.armor = 3;
     
-    this.ui.showGameOver(false);
     this.ui.showHud(false);
     this.ui.showStart(true);
   }

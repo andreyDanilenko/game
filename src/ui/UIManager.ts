@@ -10,17 +10,11 @@ export class UIManager {
     speedControl: document.getElementById('speedControl')!,
     zoomControl: document.getElementById('zoomControl')!,
     startScreen: document.getElementById('startScreen')!,
-    gameOver: document.getElementById('gameOver')!,
-    finalScore: document.getElementById('finalScore')!,
-    survivalTime: document.getElementById('survivalTime')!,
-    asteroidsDestroyed: document.getElementById('asteroidsDestroyed')!,
-    gameResult: document.getElementById('gameResult')!,
     speedSlider: document.getElementById('speedSlider') as HTMLInputElement,
     zoomSlider: document.getElementById('zoomSlider') as HTMLInputElement,
     speedValue: document.getElementById('speedValue')!,
     zoomValue: document.getElementById('zoomValue')!,
     startButton: document.getElementById('startButton') as HTMLButtonElement,
-    restartButton: document.getElementById('restartButton') as HTMLButtonElement,
     zoomInBtn: document.getElementById('zoomInBtn') as HTMLButtonElement,
     zoomOutBtn: document.getElementById('zoomOutBtn') as HTMLButtonElement,
     zoomResetBtn: document.getElementById('zoomResetBtn') as HTMLButtonElement,
@@ -54,16 +48,6 @@ export class UIManager {
 
   showStart(show: boolean): void {
     this.els.startScreen.style.display = show ? 'flex' : 'none';
-  }
-
-  showGameOver(show: boolean): void {
-    this.els.gameOver.style.display = show ? 'flex' : 'none';
-  }
-
-  setGameResult(text: string, color: string, shadow: string): void {
-    this.els.gameResult.textContent = text;
-    this.els.gameResult.style.color = color;
-    this.els.gameResult.style.textShadow = shadow;
   }
 
   getSpeed(): number {

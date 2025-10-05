@@ -43,11 +43,6 @@ export class InputController {
 
     elements.startButton.addEventListener('click', () => this.game.startNewGame());
 
-    elements.restartButton.addEventListener('click', () => {
-      this.game.cancelAnimation(); // безопасный способ остановить цикл
-      this.game.restartCurrentLevel();
-    });
-
     elements.speedSlider.addEventListener('input', () => {
       const newSpeed = this.ui.getSpeed();
       this.game.setGameSpeed(newSpeed);
