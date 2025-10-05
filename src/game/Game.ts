@@ -31,23 +31,23 @@ export class Game {
   private gameWon = false;
   private animationId: number | null = null;
 
-  private gameSpeed = 1.0; // Общая скорость игры (для UI слайдера)
-  private asteroidSpeed = 1.0; // Скорость только для астероидов
-  private levelAsteroidSpeed = 1.0; //
+  private gameSpeed = 1.0;
+  private asteroidSpeed = 1.0; 
+  private levelAsteroidSpeed = 1.0;
 
   private asteroidsDestroyed = 0;
   private mouseX = 400;
   private mouseY = 300;
 
   private currentZoomLevel = 1.0;
-    private soundSystem: SoundSystem; // ← ДОБАВЛЯЕМ СИСТЕМУ ЗВУКА
+  private soundSystem: SoundSystem;
 
 
   constructor() {
     this.player = new Player(400, 600, 20);
     this.world = new WorldSystem(this.canvas, this.ctx);
     this.levelSystem = new LevelSystem();
-    this.soundSystem = new SoundSystem(); // ← ИНИЦИАЛИЗИРУЕМ
+    this.soundSystem = new SoundSystem();
 
     this.initEventListeners();
     this.setupZoomControls();
