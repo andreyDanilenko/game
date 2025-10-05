@@ -9,12 +9,12 @@ export const LevelManifest: Record<number, LevelConfig> = {
     background: "deep_space",
     gameSpeed: 1.0,
     worldScale: 1.0,
-    duration: 25,
+    duration: 5,
     music: 'music_level10',
     difficulty: 'easy',
     objectives: [
-      { type: 'survive', target: 25, description: "Выжить 25 секунд", current: 0 },
-      { type: 'collect', target: 8, description: "Собрать 8 звезд", current: 0 }
+      { type: 'survive', target: 5, description: "Выжить 25 секунд", current: 0 },
+      { type: 'collect', target: 0, description: "Собрать 8 звезд", current: 0 }
     ],
     spawnSettings: { stars: 6, powerStars: 2, asteroids: 5 }
   },

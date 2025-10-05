@@ -1,7 +1,17 @@
 import './style.css';
 import { Game } from './game/Game';
+import App from './components/App.svelte';
+import { mount } from 'svelte';
 
-window.addEventListener('DOMContentLoaded', () => {
-  new Game();           // твоя игра — работает как раньше
-      // ← добавляем Svelte-элемент
+// Монтируем Svelte приложение по-новому
+const app = mount(App, {
+  target: document.getElementById('svelte-app')!,
 });
+
+// Инициализируем игру после загрузки DOM
+document.addEventListener('DOMContentLoaded', () => {
+  const game = new Game();
+  (window as any).game = game;
+});
+
+export default app;

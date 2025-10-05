@@ -41,7 +41,7 @@ export class InputController {
   private registerUIEvents(): void {
     const elements = this.ui.getElements();
 
-    elements.startButton.addEventListener('click', () => this.game.startNewGame());
+    // elements.startButton.addEventListener('click', () => this.game.startNewGame());
 
     elements.speedSlider.addEventListener('input', () => {
       const newSpeed = this.ui.getSpeed();
