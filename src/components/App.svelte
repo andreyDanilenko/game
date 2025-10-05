@@ -6,38 +6,39 @@
   import GameComplete from './GameComplete.svelte';
   
   $: currentScreen = $gameState.currentScreen;
-
-  console.log('currentScreen');
-  
 </script>
 
+<!-- Слой UI -->
 <div class="svelte-ui-layer">
   {#if currentScreen === 'start'}
-    <StartScreen />
+    <StartScreen class="interactive" />
   
   {:else if currentScreen === 'levelComplete'}
-    <LevelComplete />
+    <LevelComplete class="interactive" />
   
   {:else if currentScreen === 'levelFailed'}
-    <LevelFailed />
+    <LevelFailed class="interactive" />
   
   {:else if currentScreen === 'gameComplete'}
-    <GameComplete />
+    <GameComplete class="interactive" />
   {/if}
 </div>
 
 <style>
   .svelte-ui-layer {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    inset: 0;
     z-index: 1000;
     pointer-events: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
-  
-  .svelte-ui-layer > * {
+
+  .svelte-ui-layer :global(.interactive),
+  .svelte-ui-layer :global(button),
+  .svelte-ui-layer :global(input),
+  .svelte-ui-layer :global(select) {
     pointer-events: all;
   }
 </style>

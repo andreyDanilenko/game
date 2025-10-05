@@ -1,23 +1,14 @@
 <script lang="ts">
-  import { gameState } from '../stores/gameStore';
-  
-  let showInstructions = false;
-  
+    import { gameEvents } from "../events/GameEvents";
+
   function handleStartGame() {
-    // ✅ ПРАВИЛЬНО: меняем состояние через store
-    gameState.update(state => ({
-      ...state,
-      currentScreen: 'game'
-    }));
+    // Пока просто меняем экран
+        gameEvents.emit('startGame');
+
     
-    // ✅ Дополнительно эмитим событие для инициализации игры
-    window.dispatchEvent(new CustomEvent('gameAction', {
-      detail: { action: 'startGame' }
-    }));
-  }
-  
-  function toggleInstructions() {
-    showInstructions = !showInstructions;
+    // window.dispatchEvent(new CustomEvent('gameAction', {
+    //   detail: { action: 'startGame' }
+    // }));
   }
 </script>
 

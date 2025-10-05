@@ -41,8 +41,6 @@ export class InputController {
   private registerUIEvents(): void {
     const elements = this.ui.getElements();
 
-    // elements.startButton.addEventListener('click', () => this.game.startNewGame());
-
     elements.speedSlider.addEventListener('input', () => {
       const newSpeed = this.ui.getSpeed();
       this.game.setGameSpeed(newSpeed);
@@ -54,12 +52,17 @@ export class InputController {
   // [2] СОБЫТИЯ МЫШИ
   // ------------------------------------------------------------
   private registerMouseEvents(): void {
+    console.log('mouse');
+    
     // Перемещение игрока
+    console.log(this.canvas);
+    
     this.canvas.addEventListener('mousemove', (e) => {
       const rect = this.canvas.getBoundingClientRect();
       this.mouseX = e.clientX - rect.left;
       this.mouseY = e.clientY - rect.top;
-
+      console.log('1231231dscvdsaf');
+      
       const worldPos = this.world.screenToWorld(this.mouseX, this.mouseY);
 
       // Ограничиваем движение игрока границами мира
@@ -79,7 +82,7 @@ export class InputController {
   // [3] КЛАВИАТУРНЫЕ СОБЫТИЯ
   // ------------------------------------------------------------
   private registerKeyboardEvents(): void {
-    document.addEventListener('keydown', (e) => {
+    document.addEventListener('keydown', (e) => {      
       if (e.code === 'Space') this.game.handleSpaceAction();
       if (e.code === 'Equal' || e.code === 'NumpadAdd') this.game.adjustZoom(+0.5);
       if (e.code === 'Minus' || e.code === 'NumpadSubtract') this.game.adjustZoom(-0.5);

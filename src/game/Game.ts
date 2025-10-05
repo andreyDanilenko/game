@@ -15,7 +15,8 @@ import { ParticleSystem } from '../systems/ParticleSystem';
 import { InputController } from './controllers/InputController';
 import { SmartAsteroid } from './objects/SmartAsteroid';
 
-import { mountGameScreen } from '../components/GameOverScreen/GameOverScreenMount';
+import { gameState, screenData } from '../stores/gameStore';
+import { gameEvents } from '../events/GameEvents';
 
 export class Game {
   private canvas = document.getElementById('gameCanvas') as HTMLCanvasElement;
@@ -56,8 +57,8 @@ export class Game {
     this.particleSystem = new ParticleSystem();
     this.entityManager = new EntityManager();
 
-    this.ui.showStart(true);
     this.inputController = new InputController(this.canvas, this, this.ui, this.player, this.world);
+    this.setupGameEventListeners();
   }
 
   // Обработчик действия по нажатию пробела
@@ -545,7 +546,7 @@ export class Game {
       cancelAnimationFrame(this.animationId);
     }
     
-    this.ui.showStart(false);
+    // this.ui.showStart(false);
     this.ui.showHud(true);
     this.gameRunning = true;
     
@@ -554,15 +555,28 @@ export class Game {
     } else {
       this.levelSystem.loadLevel(1);
     }
+
+    gameState.update(state => ({
+      ...state,
+      currentScreen: 'game'
+    }));
+    
     
     this.init();
     this.gameLoop();
   }
 
+
+
   // Метод начала следующего уровня
   public startNextLevel(): void {
     const nextLevelId = this.levelSystem.getCurrentLevel().id + 1;
     console.log(`🎮 StartNextLevel: переход на уровень ${nextLevelId}`);
+    
+    gameState.update(state => ({
+      ...state,
+      currentScreen: 'game'
+    }));
     
     this.levelSystem.loadLevel(nextLevelId);
     this.startLevel(nextLevelId);
@@ -572,6 +586,12 @@ export class Game {
   public restartCurrentLevel(): void {
     const currentLevelId = this.levelSystem.getCurrentLevel().id;
     console.log(`🎮 RestartCurrentLevel: рестарт уровня ${currentLevelId}`);
+
+    gameState.update(state => ({
+      ...state,
+      currentScreen: 'game'
+    }));
+    
     
     this.levelSystem.loadLevel(currentLevelId);
     this.startLevel(currentLevelId);
@@ -585,6 +605,12 @@ export class Game {
     if (this.animationId) {
       cancelAnimationFrame(this.animationId);
     }
+
+    gameState.update(state => ({
+      ...state,
+      currentScreen: 'game'
+    }));
+    
     
     this.ui.showHud(true);
     this.gameRunning = true;
@@ -622,55 +648,116 @@ export class Game {
   private showGameCompleteScreen(): void {
     const stats = this.levelSystem.getLevelStats();
 
-    mountGameScreen({
-      type: 'gameComplete',
-      isVisible: true,
-      title: 'ВСЯ ИГРА ПРОЙДЕНА!',
-      finalScore: stats.score,
-      survivalTime: this.levelSystem.getCurrentLevel().duration,
-      asteroidsDestroyed: stats.asteroidsDestroyed,
-      onButtonClick: () => {
-        this.returnToMainMenu();
+    screenData.update(data => ({
+      ...data,
+      gameComplete: {
+        finalScore: stats.score,
+        levelsCompleted: this.levelSystem.getCurrentLevel().id,
       }
-    });
+    }));
+    
+    // Показываем экран
+    gameState.update(state => ({
+      ...state,
+      currentScreen: 'gameComplete'
+    }));
   }
 
-  // Метод показа кнопки следующего уровня
+
+
   private showLevelCompleteScreen(): void {
     const level = this.levelSystem.getCurrentLevel();
     const stats = this.levelSystem.getLevelStats();
 
-    mountGameScreen({
-      type: 'complete',
-      isVisible: true,
-      title: `УРОВЕНЬ ${level.id} ПРОЙДЕН!`,
-      finalScore: stats.score,
-      survivalTime: level.duration,
-      asteroidsDestroyed: stats.asteroidsDestroyed,
-      onButtonClick: () => {
-        this.startNextLevel();
+    // Заполняем данные для экрана завершения уровня
+    screenData.update(data => ({
+      ...data,
+      levelComplete: {
+        title: `УРОВЕНЬ ${level.id} ПРОЙДЕН!`,
+        score: stats.score,
+        asteroidsDestroyed: stats.asteroidsDestroyed
       }
-    });
+    }));
+    
+    // Показываем экран
+    gameState.update(state => ({
+      ...state,
+      currentScreen: 'levelComplete'
+    }));
   }
 
-  // Метод показа экрана провала уровня
   private showLevelFailedScreen(): void {
     const level = this.levelSystem.getCurrentLevel();
     const stats = this.levelSystem.getLevelStats();
 
-    mountGameScreen({
-      type: 'failed',
-      isVisible: true,
-      title: `УРОВЕНЬ ${level.id} ПРОВАЛЕН`,
-      finalScore: stats.score,
-      survivalTime: Math.ceil(this.gameTime),
-      asteroidsDestroyed: stats.asteroidsDestroyed,
-      onButtonClick: () => {
-        this.cancelAnimation();
-        this.restartCurrentLevel();
+    // Заполняем данные для экрана провала
+    screenData.update(data => ({
+      ...data,
+      levelFailed: {
+        title: `УРОВЕНЬ ${level.id} ПРОВАЛЕН`,
+        score: stats.score,
+        survivalTime: Math.ceil(this.gameTime),
+        asteroidsDestroyed: stats.asteroidsDestroyed
       }
-    });
+    }));
+    
+    // Показываем экран
+    gameState.update(state => ({
+      ...state,
+      currentScreen: 'levelFailed'
+    }));
   }
+
+  // Обработчик событий от Svelte компонентов
+    private setupGameEventListeners(): void {
+      gameEvents.on((action) => {
+        console.log('🎮 Game action:', action);
+        switch (action) {
+          case 'startGame': this.startNewGame(); break;
+          case 'nextLevel': this.startNextLevel(); break;
+          case 'restartLevel': this.restartCurrentLevel(); break;
+          case 'restartGame': this.restartEntireGame(); break;
+          case 'mainMenu': this.returnToMainMenu(); break;
+        }
+      });
+    }
+
+  // Метод показа кнопки следующего уровня
+  // private showLevelCompleteScreen(): void {
+  //   const level = this.levelSystem.getCurrentLevel();
+  //   const stats = this.levelSystem.getLevelStats();
+
+  //   mountGameScreen({
+  //     type: 'complete',
+  //     isVisible: true,
+  //     title: `УРОВЕНЬ ${level.id} ПРОЙДЕН!`,
+  //     finalScore: stats.score,
+  //     survivalTime: level.duration,
+  //     asteroidsDestroyed: stats.asteroidsDestroyed,
+  //     onButtonClick: () => {
+  //       this.startNextLevel();
+  //     }
+  //   });
+  // }
+
+  // // Метод показа экрана провала уровня
+  // private showLevelFailedScreen(): void {
+  //   const level = this.levelSystem.getCurrentLevel();
+  //   const stats = this.levelSystem.getLevelStats();
+
+  //   mountGameScreen({
+  //     type: 'failed',
+  //     isVisible: true,
+  //     title: `УРОВЕНЬ ${level.id} ПРОВАЛЕН`,
+  //     finalScore: stats.score,
+  //     survivalTime: Math.ceil(this.gameTime),
+  //     asteroidsDestroyed: stats.asteroidsDestroyed,
+  //     onButtonClick: () => {
+  //       this.cancelAnimation();
+  //       this.restartCurrentLevel();
+  //     }
+  //   });
+  // }
 
   // Метод начала игры
   public startGame(): void {
@@ -688,6 +775,11 @@ export class Game {
       console.log('🔄 StartGame: сброс на уровень 1');
       this.levelSystem.loadLevel(1);
     }
+
+    gameState.update(state => ({
+      ...state,
+      currentScreen: 'game'
+    }));
     
     this.init();
     this.gameLoop();
@@ -714,7 +806,10 @@ export class Game {
     this.player.armor = 3;
     
     this.ui.showHud(false);
-    this.ui.showStart(true);
+    gameState.update(state => ({
+      ...state,
+      currentScreen: 'start'
+    }));
   }
 
   // Метод перезапуска всей игры

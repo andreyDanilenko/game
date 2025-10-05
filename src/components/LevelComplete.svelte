@@ -1,24 +1,32 @@
 <script lang="ts">
+    import { gameEvents } from '../events/GameEvents';
   import { screenData } from '../stores/gameStore';
   
   let data = $screenData.levelComplete;
+  console.log('import { screenData } from;');
+  
   
   function handleNextLevel() {
-    console.log('nextLevel');
+    console.log();
     
-    window.dispatchEvent(new CustomEvent('gameAction', {
+    console.log('nextLevel');
+        gameEvents.emit('nextLevel');
+
+    // window.dispatchEvent(new CustomEvent('gameAction', {
         
-      detail: { action: 'nextLevel' }
-    }));
+    //   detail: { action: 'nextLevel' }
+    // }));
   }
   
-  function handleRestart() {
-        console.log('handleRestart');
+  function handleRestart() {   
+    console.log('123');
+    
+     gameEvents.emit('restartLevel');
 
-    window.dispatchEvent(new CustomEvent('gameAction', {
+    // window.dispatchEvent(new CustomEvent('gameAction', {
         
-      detail: { action: 'restartLevel' }
-    }));
+    //   detail: { action: 'restartLevel' }
+    // }));
   }
 </script>
 
