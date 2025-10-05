@@ -44,6 +44,7 @@ export class Game {
   private asteroidsDestroyed = 0;
   private currentZoomLevel = 1.0;
 
+  // Конструктор класса Game
   constructor() {
     this.player = new Player(400, 600, 20);
 
@@ -54,32 +55,35 @@ export class Game {
     this.entityManager = new EntityManager();
 
     this.ui.showStart(true);
-
-
     this.inputController = new InputController(this.canvas, this, this.ui, this.player, this.world);
   }
 
-
+  // Обработчик действия по нажатию пробела
   public handleSpaceAction(): void {
     if (this.gameRunning) this.explodeAllObjects();
   }
 
+  // Метод для изменения уровня масштабирования
   public adjustZoom(delta: number): void {
     this.setWorldZoom(this.currentZoomLevel + delta);
   }
 
+  // Метод для сброса масштабирования
   public resetZoom(): void {
     this.resetWorldZoom();
   }
 
+  // Метод для установки скорости игры
   public setGameSpeed(speed: number): void {
     this.gameSpeed = speed;
   }
 
+  // Метод для отмены анимации
   public cancelAnimation(): void {
     if (this.animationId) cancelAnimationFrame(this.animationId);
   }
 
+  // Метод для установки масштаба мира
   public setWorldZoom(zoomLevel: number): void {
     this.currentZoomLevel = Math.max(0.5, Math.min(3.0, zoomLevel));
     this.world.setScale(this.currentZoomLevel);
@@ -89,6 +93,7 @@ export class Game {
     }
   }
 
+  // Метод для сброса масштаба мира
   public resetWorldZoom(): void {
     this.currentZoomLevel = 1.0;
     this.world.setScale(1.0);
@@ -102,6 +107,7 @@ export class Game {
     }
   }
 
+  // Метод инициализации игры
   private init(): void {
     const level = this.levelSystem.getCurrentLevel();
 
@@ -119,10 +125,12 @@ export class Game {
     this.updateLevelUI();
   }
 
+  // Метод применения настроек мира для уровня
   private applyLevelWorldSettings(level: LevelConfig): void {
     this.world.setScale(level.worldScale);
   }
 
+  // Метод сброса состояния игры
   private resetGameState(level: LevelConfig): void {
     this.score = 0;
     this.gameTime = level.duration;
@@ -137,6 +145,7 @@ export class Game {
     this.entityManager.clearEntities();
   }
 
+  // Метод создания объектов уровня
   private spawnLevelObjects(): void {
     const settings = this.levelSystem.getCurrentLevel().spawnSettings;
     
@@ -148,6 +157,7 @@ export class Game {
     for (let i = 0; i < deathCount; i++) this.createSmartAsteroid();
   }
 
+  // Метод создания звезды
   private createStar(): void {
     const spawnArea = this.world.getSpawnArea();
     const x = Math.random() * (spawnArea.width - 200) + 100;
@@ -156,6 +166,7 @@ export class Game {
     this.entityManager.addEntity(ENTITY_TYPES.STARS, new Star(x, y, r));
   }
 
+  // Метод создания умного астероида
   private createSmartAsteroid(): void {
     const spawnArea = this.world.getSpawnArea();
     const size = Math.random() * 25 + 20;
@@ -170,6 +181,7 @@ export class Game {
     );
   }
 
+  // Метод создания силовой звезды
   private createPowerStar(): void {
     const spawnArea = this.world.getSpawnArea();
     const x = Math.random() * (spawnArea.width - 200) + 100;
@@ -178,6 +190,7 @@ export class Game {
     this.entityManager.addEntity(ENTITY_TYPES.POWER_STARS, new PowerStar(x, y, r));
   }
 
+  // Метод создания отскакивающего астероида
   private createBouncingAsteroid(): void {
     const spawnArea = this.world.getSpawnArea();
     const size = Math.random() * 25 + 15;
@@ -194,6 +207,7 @@ export class Game {
     ));
   }
 
+  // Метод создания частиц
   private createParticles(x: number, y: number, color: string, count = 10): void {
     for (let i = 0; i < count; i++) {
       const vx = (Math.random() - 0.5) * 8;
@@ -203,11 +217,13 @@ export class Game {
     }
   }
 
+  // Метод создания взрыва
   private createExplosion(x: number, y: number, radius: number, color: string): void {
     this.entityManager.addEntity(ENTITY_TYPES.EXPLOSIONS, new Explosion(x, y, radius, color));
     this.createParticles(x, y, color, 30);
   }
 
+  // Метод создания волны взрыва
   private createExplosionWave(centerX: number, centerY: number, power: number, color: string): void {
     const baseRadius = 30 + (power * 0.5);
     const waveCount = 2 + Math.floor(power / 50);
@@ -242,6 +258,7 @@ export class Game {
     }
   }
 
+  // Метод взрыва всех объектов
   private explodeAllObjects(): void {
     const explosionPower = this.power;
     
@@ -259,6 +276,7 @@ export class Game {
     }, spawnDelay);
   }
 
+  // Метод уничтожения объектов в радиусе
   private destroyObjectsInRadius(centerX: number, centerY: number, power: number): void {
     const explosionRadius = 100 + (power * 3);
     
@@ -297,6 +315,7 @@ export class Game {
     this.levelSystem.updateObjectiveProgress('score', starsScore + powerStarsScore);
   }
 
+  // Метод сбора звезд в радиусе
   private collectStarsInRadius(
     centerX: number, 
     centerY: number, 
@@ -326,6 +345,7 @@ export class Game {
     return starsToRemove.length;
   }
 
+  // Метод обновления интерфейса
   private updateUI(): void {
     this.ui.updateScore(this.score);
     this.ui.updateTime(this.gameTime);
@@ -333,6 +353,7 @@ export class Game {
     this.ui.updatePower(this.power);
   }
 
+  // Метод обновления интерфейса уровня
   private updateLevelUI(): void {
     const level = this.levelSystem.getCurrentLevel();
     const progress = this.levelSystem.getLevelProgress();
@@ -340,6 +361,7 @@ export class Game {
     this.ui.updateLevelInfo(level.name, progress);
   }
 
+  // Метод проверки столкновений
   private checkCollisions(): void {
     // Звезды
     for (let i = this.entityManager.stars.length - 1; i >= 0; i--) {
@@ -376,6 +398,7 @@ export class Game {
     }
   }
 
+  // Метод обработки сбора звезды
   private handleStarCollection(star: Star): void {
     this.entityManager.removeEntity(ENTITY_TYPES.STARS, star);
     this.score += 10;
@@ -388,6 +411,7 @@ export class Game {
     this.updateLevelUI();
   }
 
+  // Метод обработки сбора силовой звезды
   private handlePowerStarCollection(powerStar: PowerStar): void {
     this.entityManager.removeEntity(ENTITY_TYPES.POWER_STARS, powerStar);
     this.player.armor++;
@@ -403,6 +427,7 @@ export class Game {
     this.updateLevelUI();
   }
 
+  // Метод обработки столкновения с астероидом
   private handleAsteroidCollision(asteroid: Asteroid): void {
     if (this.player.armor > 0) {
       this.player.armor--;
@@ -422,6 +447,7 @@ export class Game {
     }
   }
 
+  // Метод обновления игрового состояния
   private update(): void {
     if (!this.gameRunning) return;    
 
@@ -460,6 +486,7 @@ export class Game {
     this.checkCollisions();
   }
 
+  // Метод отрисовки игры
   private render(): void {
     this.world.clearCanvas(this.ctx, '#0a0a1a');
     this.world.applyWorldTransform();
@@ -475,6 +502,7 @@ export class Game {
     this.world.restoreTransform();
   }
 
+  // Метод очистки устаревших сущностей
   private cleanupExpiredEntities(): void {
     const aliveParticles = this.entityManager.particles.filter(p => p.life > 0);
     this.entityManager.clearEntities(ENTITY_TYPES.PARTICLES);
@@ -485,6 +513,7 @@ export class Game {
     aliveExplosions.forEach(e => this.entityManager.addEntity(ENTITY_TYPES.EXPLOSIONS, e));
   }
 
+  // Главный игровой цикл
   private gameLoop = (): void => {
     if (!this.gameRunning) {
       this.animationId = null;
@@ -495,6 +524,7 @@ export class Game {
     this.animationId = requestAnimationFrame(this.gameLoop);
   };
 
+  // Метод проверки завершения уровня
   private checkLevelCompletion(): void {
     const completion = this.levelSystem.checkLevelCompletion();
         
@@ -505,6 +535,7 @@ export class Game {
     }
   }
 
+  // Метод начала новой игры
   public startNewGame(): void {
     console.log('🎮 StartNewGame: начало новой игры с уровня 1');
     
@@ -526,6 +557,7 @@ export class Game {
     this.gameLoop();
   }
 
+  // Метод начала следующего уровня
   public startNextLevel(): void {
     const nextLevelId = this.levelSystem.getCurrentLevel().id + 1;
     console.log(`🎮 StartNextLevel: переход на уровень ${nextLevelId}`);
@@ -534,6 +566,7 @@ export class Game {
     this.startLevel(nextLevelId);
   }
 
+  // Метод перезапуска текущего уровня
   public restartCurrentLevel(): void {
     const currentLevelId = this.levelSystem.getCurrentLevel().id;
     console.log(`🎮 RestartCurrentLevel: рестарт уровня ${currentLevelId}`);
@@ -542,6 +575,7 @@ export class Game {
     this.startLevel(currentLevelId);
   }
 
+  // Метод запуска уровня
   private startLevel(levelId: number): void {
     console.log(`🎮 StartLevel: запуск уровня ${levelId}`);
     
@@ -557,10 +591,12 @@ export class Game {
     this.gameLoop();
   }
 
+  // Метод обработки провала уровня
   private failLevel(): void {
     this.gameOver();
   }
 
+  // Метод завершения уровня
   private completeLevel(): void {
     this.gameRunning = false;
     if (this.animationId) cancelAnimationFrame(this.animationId);
@@ -581,6 +617,7 @@ export class Game {
     }
   }
 
+  // Метод показа экрана завершения уровня
   private showLevelCompleteScreen(): void {
     const level = this.levelSystem.getCurrentLevel();
     const stats = this.levelSystem.getLevelStats();
@@ -593,6 +630,7 @@ export class Game {
     this.showNextLevelButton();
   }
 
+  // Метод показа кнопки следующего уровня
   private showNextLevelButton(): void {
     const restartBtn = this.ui.getElements().restartButton;
     restartBtn.textContent = 'СЛЕДУЮЩИЙ УРОВЕНЬ';
@@ -607,12 +645,14 @@ export class Game {
     this.ui.showGameOver(true);
   }
 
+  // Метод показа кнопки перезапуска уровня
   private showRestartLevelButton(): void {
     const restartBtn = this.ui.getElements().restartButton;
     restartBtn.textContent = 'ПОВТОРИТЬ УРОВЕНЬ';
     this.ui.showGameOver(true);
   }
 
+  // Метод показа экрана завершения игры
   private showGameCompleteScreen(): void {
     const stats = this.levelSystem.getLevelStats();
     
@@ -634,6 +674,7 @@ export class Game {
     this.ui.showGameOver(true);
   }
 
+  // Метод показа экрана провала уровня
   private showLevelFailedScreen(): void {
     const level = this.levelSystem.getCurrentLevel();
     const stats = this.levelSystem.getLevelStats();
@@ -646,6 +687,7 @@ export class Game {
     this.showRestartLevelButton();
   }
 
+  // Метод начала игры
   public startGame(): void {
     if (this.gameRunning && this.animationId) {
       cancelAnimationFrame(this.animationId);
@@ -666,6 +708,7 @@ export class Game {
     this.gameLoop();
   }
 
+  // Метод возврата в главное меню
   private returnToMainMenu(): void {
     console.log('🏠 ReturnToMainMenu: возврат в главное меню');
     
@@ -690,11 +733,13 @@ export class Game {
     this.ui.showStart(true);
   }
 
+  // Метод перезапуска всей игры
   public restartEntireGame(): void {
     this.levelSystem.loadLevel(1);
     this.startLevel(1);
   }
 
+  // Метод завершения игры
   private gameOver(): void {
     this.gameRunning = false;
     if (this.animationId) { 
