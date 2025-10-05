@@ -4,29 +4,31 @@ import { Star } from './objects/Star';
 import { PowerStar } from './objects/PowerStar';
 import { Asteroid } from './objects/Asteroid';
 import { Explosion } from './objects/Explosion';
-import { Particle } from './objects/Particle';
 import { WorldSystem } from '../systems/WorldSystem';
 import { LevelSystem } from '../systems/LevelSystem';
 import { SoundSystem } from '../systems/SoundSystem';
 import { LevelConfig } from '../types/LevelTypes';
 import { EntityManager } from '../managers/EntityManager';
-import { ENTITY_TYPES } from '../constants/gameConstants';
 import { ParticleSystem } from '../systems/ParticleSystem';
+import { ENTITY_TYPES } from '../constants/gameConstants';
+import { CollisionResult, CollisionSystem } from '../systems/CollisionSystem';
 
+/**
+ * ОСНОВНОЙ КЛАСС ИГРЫ - КООРДИНАТОР ВСЕХ СИСТЕМ
+ */
 export class Game {
   private canvas = document.getElementById('gameCanvas') as HTMLCanvasElement;
   private ctx = this.canvas.getContext('2d')!;
   private ui = new UIManager();
   private player: Player;
-
   private world: WorldSystem;
   private levelSystem: LevelSystem;
   private soundSystem: SoundSystem;
   private particleSystem: ParticleSystem;
+  private collisionSystem: CollisionSystem;
 
-   
+
   private entityManager: EntityManager;
-  
 
   private score = 0;
   private gameTime = 60;
@@ -46,13 +48,18 @@ export class Game {
 
   constructor() {
     this.player = new Player(400, 600, 20);
-
     this.world = new WorldSystem(this.canvas, this.ctx);
     this.levelSystem = new LevelSystem();
     this.soundSystem = new SoundSystem();
     this.particleSystem = new ParticleSystem();
-
     this.entityManager = new EntityManager();
+
+    this.collisionSystem = new CollisionSystem(
+      this.entityManager,
+      this.levelSystem,
+      this.soundSystem,
+      this.particleSystem
+    );
 
     this.initEventListeners();
     this.setupZoomControls();
@@ -254,18 +261,9 @@ export class Game {
     ));
   }
 
-  private createParticles(x: number, y: number, color: string, count = 10): void {
-    for (let i = 0; i < count; i++) {
-      const vx = (Math.random() - 0.5) * 8;
-      const vy = (Math.random() - 0.5) * 8;
-      const r = Math.random() * 4 + 1;
-      this.entityManager.addEntity(ENTITY_TYPES.PARTICLES, new Particle(x, y, vx, vy, r, color));
-    }
-  }
-
   private createExplosion(x: number, y: number, radius: number, color: string): void {
     this.entityManager.addEntity(ENTITY_TYPES.EXPLOSIONS, new Explosion(x, y, radius, color));
-    this.createParticles(x, y, color, 30);
+    this.particleSystem.createParticles(x, y, 'explosion', this.entityManager);
   }
 
   private createExplosionWave(centerX: number, centerY: number, power: number, color: string): void {
@@ -319,69 +317,25 @@ export class Game {
     }, spawnDelay);
   }
 
+
   private destroyObjectsInRadius(centerX: number, centerY: number, power: number): void {
     const explosionRadius = 100 + (power * 3);
     
-    // Уничтожение астероидов
-    const asteroidsToDestroy = this.entityManager.asteroids.filter(asteroid => {
-      const dx = asteroid.x - centerX;
-      const dy = asteroid.y - centerY;
-      const distance = Math.sqrt(dx * dx + dy * dy);
-      
-      if (distance <= explosionRadius) {
-        this.createExplosion(asteroid.x, asteroid.y, 15, '#ff6666');
-        return true;
-      }
-      return false;
-    });
+    // ИСПОЛЬЗУЕМ CollisionSystem для проверки столкновений в радиусе
+    const destructionResult = this.collisionSystem.checkCollisionsInRadius(
+      centerX, centerY, explosionRadius
+    );
 
-    this.asteroidsDestroyed += asteroidsToDestroy.length;
-    this.levelSystem.updateObjectiveProgress('asteroid_destroyed', asteroidsToDestroy.length);
+    this.asteroidsDestroyed += destructionResult.asteroidsDestroyed;    
     
-    asteroidsToDestroy.forEach(asteroid => {
-      this.entityManager.removeEntity(ENTITY_TYPES.ASTEROIDS, asteroid);
-    });
-    
-    // Сбор звезд
-    const starsCollected = this.collectStarsInRadius(centerX, centerY, explosionRadius, ENTITY_TYPES.STARS, '#ffffff', 8, 15);
-    const powerStarsCollected = this.collectStarsInRadius(centerX, centerY, explosionRadius, ENTITY_TYPES.POWER_STARS, '#ff66ff', 12, 25);
-    
-    const starsScore = starsCollected * 15;
-    const powerStarsScore = powerStarsCollected * 25;
+    const starsScore = destructionResult.starsCollected * 15;
+    const powerStarsScore = destructionResult.powerStarsCollected * 25;
     this.score += starsScore + powerStarsScore;
     
-    this.levelSystem.updateObjectiveProgress('star_collected', starsCollected);
-    this.levelSystem.updateObjectiveProgress('power_star_collected', powerStarsCollected);
+    this.levelSystem.updateObjectiveProgress('asteroid_destroyed', destructionResult.asteroidsDestroyed);
+    this.levelSystem.updateObjectiveProgress('star_collected', destructionResult.starsCollected);
+    this.levelSystem.updateObjectiveProgress('power_star_collected', destructionResult.powerStarsCollected);
     this.levelSystem.updateObjectiveProgress('score', starsScore + powerStarsScore);
-  }
-
-  private collectStarsInRadius(
-    centerX: number, 
-    centerY: number, 
-    radius: number, 
-    type: typeof ENTITY_TYPES.STARS | typeof ENTITY_TYPES.POWER_STARS,
-    particleColor: string,
-    particleCount: number,
-    points: number
-  ): number {
-    const stars = type === ENTITY_TYPES.STARS ? this.entityManager.stars : this.entityManager.powerStars;
-    const starsToRemove = stars.filter(star => {
-      const dx = star.x - centerX;
-      const dy = star.y - centerY;
-      const distance = Math.sqrt(dx * dx + dy * dy);
-      
-      if (distance <= radius) {
-        this.createParticles(star.x, star.y, particleColor, particleCount);
-        return true;
-      }
-      return false;
-    });
-
-    starsToRemove.forEach(star => {
-      this.entityManager.removeEntity(type, star);
-    });
-
-    return starsToRemove.length;
   }
 
   private updateUI(): void {
@@ -397,6 +351,29 @@ export class Game {
     this.ui.updateLevelObjectives(level.objectives);
     this.ui.updateLevelInfo(level.name, progress);
   }
+
+  // private handleCollisions(): void {
+  //   const collisionResult = this.collisionSystem.checkAllCollisions(this.player);
+  //   this.applyCollisionResults(collisionResult);
+  // }
+
+  // private applyCollisionResults(result: CollisionResult): void {
+  //   const hasChanges = result.score > 0 || result.armor > 0 || result.power > 0;
+    
+  //   if (hasChanges) {
+  //     this.score += result.score;
+  //     this.player.armor += result.armor;
+  //     this.power = Math.min(100, this.power + result.power);
+      
+  //     this.updateUI();
+  //     this.updateLevelUI();
+  //   }
+    
+  //   if (result.shouldGameOver) {
+  //     this.gameOver();
+  //   }
+  // }
+
 
   private checkCollisions(): void {
     // Звезды
@@ -437,6 +414,7 @@ export class Game {
     this.levelSystem.updateObjectiveProgress('star_collected', 1);
     this.levelSystem.updateObjectiveProgress('score', 10);
     this.particleSystem.createParticles(star.x, star.y, 'star_collect', this.entityManager);
+    
     this.createStar();
     this.updateUI();
     this.updateLevelUI();
@@ -449,7 +427,6 @@ export class Game {
     this.score += 25;
     this.levelSystem.updateObjectiveProgress('power_star_collected', 1);
     this.levelSystem.updateObjectiveProgress('score', 25);
-    
     this.particleSystem.createParticles(powerStar.x, powerStar.y, 'power_star_collect', this.entityManager);
 
     this.createPowerStar();
@@ -464,9 +441,8 @@ export class Game {
       this.asteroidsDestroyed++;
       this.levelSystem.updateObjectiveProgress('asteroid_destroyed', 1);
 
-
+      // ИСПОЛЬЗУЕМ ParticleSystem
       this.particleSystem.createParticles(asteroid.x, asteroid.y, 'asteroid_destroy', this.entityManager);
-
 
       this.createBouncingAsteroid();
       this.updateUI();
@@ -502,7 +478,6 @@ export class Game {
       height: this.world.worldHeight
     };
     
-    this.asteroidSpeed = this.levelAsteroidSpeed * this.gameSpeed;
     this.asteroidSpeed = this.levelAsteroidSpeed * this.gameSpeed;
     this.entityManager.updateAllWithIndividualSpeeds(
       this.asteroidSpeed,
