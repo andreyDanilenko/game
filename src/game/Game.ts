@@ -11,6 +11,7 @@ import { SoundSystem } from '../systems/SoundSystem';
 import { LevelConfig } from '../types/LevelTypes';
 import { EntityManager } from '../managers/EntityManager';
 import { ENTITY_TYPES } from '../constants/gameConstants';
+import { ParticleSystem } from '../systems/ParticleSystem';
 
 export class Game {
   private canvas = document.getElementById('gameCanvas') as HTMLCanvasElement;
@@ -21,8 +22,11 @@ export class Game {
   private world: WorldSystem;
   private levelSystem: LevelSystem;
   private soundSystem: SoundSystem;
+  private particleSystem: ParticleSystem;
+
    
   private entityManager: EntityManager;
+  
 
   private score = 0;
   private gameTime = 60;
@@ -42,9 +46,12 @@ export class Game {
 
   constructor() {
     this.player = new Player(400, 600, 20);
+
     this.world = new WorldSystem(this.canvas, this.ctx);
     this.levelSystem = new LevelSystem();
     this.soundSystem = new SoundSystem();
+    this.particleSystem = new ParticleSystem();
+
     this.entityManager = new EntityManager();
 
     this.initEventListeners();
@@ -429,7 +436,7 @@ export class Game {
     this.soundSystem.playEffect('collect_star');
     this.levelSystem.updateObjectiveProgress('star_collected', 1);
     this.levelSystem.updateObjectiveProgress('score', 10);
-    this.createParticles(star.x, star.y, '#ffff00', 15);
+    this.particleSystem.createParticles(star.x, star.y, 'star_collect', this.entityManager);
     this.createStar();
     this.updateUI();
     this.updateLevelUI();
@@ -442,7 +449,9 @@ export class Game {
     this.score += 25;
     this.levelSystem.updateObjectiveProgress('power_star_collected', 1);
     this.levelSystem.updateObjectiveProgress('score', 25);
-    this.createParticles(powerStar.x, powerStar.y, '#ff66ff', 25);
+    
+    this.particleSystem.createParticles(powerStar.x, powerStar.y, 'power_star_collect', this.entityManager);
+
     this.createPowerStar();
     this.updateUI();
     this.updateLevelUI();
@@ -454,7 +463,11 @@ export class Game {
       this.entityManager.removeEntity(ENTITY_TYPES.ASTEROIDS, asteroid);
       this.asteroidsDestroyed++;
       this.levelSystem.updateObjectiveProgress('asteroid_destroyed', 1);
-      this.createParticles(asteroid.x, asteroid.y, '#ff4444', 20);
+
+
+      this.particleSystem.createParticles(asteroid.x, asteroid.y, 'asteroid_destroy', this.entityManager);
+
+
       this.createBouncingAsteroid();
       this.updateUI();
       this.updateLevelUI();
@@ -502,26 +515,17 @@ export class Game {
   }
 
   private render(): void {
-    this.ctx.fillStyle = '#0a0a1a';
-    this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-
+    this.world.clearCanvas(this.ctx, '#0a0a1a');
     this.world.applyWorldTransform();
-
-    // Фоновые звезды
-    this.ctx.fillStyle = 'rgba(255,255,255,0.2)';
-    const starCount = 150 * this.currentZoomLevel;
-    for (let i = 0; i < starCount; i++) {
-      const x = (i * 41) % this.world.worldWidth;
-      const y = (i * 67) % this.world.worldHeight;
-      const size = Math.sin(Date.now() * 0.001 + i) * 0.3 + 1;
-      this.ctx.beginPath();
-      this.ctx.arc(x, y, size, 0, Math.PI * 2);
-      this.ctx.fill();
-    }
+    this.world.renderBackground(this.ctx, {
+      zoomLevel: this.currentZoomLevel,
+      starColor: 'rgba(255,255,255,0.2)',
+      starCountMultiplier: 150
+    });
+  
 
     this.entityManager.renderEntities(this.ctx);
     this.player.render(this.ctx);
-
     this.world.restoreTransform();
   }
 

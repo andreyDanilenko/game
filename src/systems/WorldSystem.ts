@@ -1,3 +1,5 @@
+import { BackgroundOptions } from "../types/WorldTypes";
+
 export class WorldSystem {
   public worldWidth: number = 800;
   public worldHeight: number = 600;
@@ -126,5 +128,60 @@ export class WorldSystem {
     this.scale = 1.0;
     this.targetScale = 1.0;
     this.updateWorldSize(); // Сбрасываем к текущему размеру экрана
+  }
+
+  renderBackground(ctx: CanvasRenderingContext2D, options: BackgroundOptions): void {
+    const {
+      zoomLevel,
+      starColor = 'rgba(255,255,255,0.2)',
+      starCountMultiplier = 150,
+      animationSpeed = 0.001,
+      pattern = 'stars'
+    } = options;
+
+    switch (pattern) {
+      case 'stars':
+        this.renderStarBackground(ctx, zoomLevel, starColor, starCountMultiplier, animationSpeed);
+        break;
+      case 'grid':
+        this.renderGridBackground(ctx, zoomLevel, starColor);
+        break;
+      case 'nebula':
+        this.renderNebulaBackground(ctx, zoomLevel);
+        break;
+    }
+  }
+
+  private renderStarBackground(
+    ctx: CanvasRenderingContext2D,
+    zoomLevel: number,
+    starColor: string,
+    starCountMultiplier: number,
+    animationSpeed: number
+  ): void {
+    ctx.fillStyle = starColor;
+    const starCount = starCountMultiplier * zoomLevel;
+    
+    for (let i = 0; i < starCount; i++) {
+      const x = (i * 41) % this.worldWidth;
+      const y = (i * 67) % this.worldHeight;
+      const size = Math.sin(Date.now() * animationSpeed + i) * 0.3 + 1;
+      ctx.beginPath();
+      ctx.arc(x, y, size, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+
+  private renderGridBackground(ctx: CanvasRenderingContext2D, zoomLevel: number, color: string): void {
+    // логика сетки
+  }
+
+  private renderNebulaBackground(ctx: CanvasRenderingContext2D, zoomLevel: number): void {
+    // логика туманности
+  }
+
+  clearCanvas(ctx: CanvasRenderingContext2D, backgroundColor: string = '#0a0a1a'): void {
+    ctx.fillStyle = backgroundColor;
+    ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
   }
 }
