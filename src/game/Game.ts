@@ -8,6 +8,7 @@ import { Particle } from './objects/Particle';
 import { WorldSystem } from '../systems/WorldSystem';
 import { LevelSystem } from '../systems/LevelSystem';
 import { SoundSystem } from '../systems/SoundSystem';
+import { LevelConfig } from '../types/LevelTypes';
 
 export class Game {
   private canvas = document.getElementById('gameCanvas') as HTMLCanvasElement;
@@ -173,49 +174,46 @@ export class Game {
     });
   }
 
-  private init(): void {
-    const level = this.levelSystem.getCurrentLevel();
-        
-    this.soundSystem.playMusic(level.music);
+private init(): void {
+  const level = this.levelSystem.getCurrentLevel();
 
-    this.score = 0;
-    this.gameTime = level.duration;
-    this.player.armor = 3;
-    this.power = 0;
-    this.asteroidsDestroyed = 0;
-    this.gameWon = false;
+  this.soundSystem.playMusic(level.music);
 
-    // СНАЧАЛА применяем настройки мира
-    this.resetWorldZoom();
-    this.world.reset();
-    this.world.setScale(level.worldScale);
+  this.applyLevelWorldSettings(level);
+  this.resetGameState(level);
     
-    // РАЗДЕЛЯЕМ СКОРОСТИ:
-    this.gameSpeed = 1.0; // UI слайдер всегда начинается с 1.0
-    this.levelAsteroidSpeed = level.gameSpeed; // Базовая скорость астероидов для уровня
-    this.asteroidSpeed = this.levelAsteroidSpeed; // Текущая скорость астероидов
-    
-    this.ui.setSpeedDisplay(this.gameSpeed);
+  this.gameSpeed = 1.0;
+  this.levelAsteroidSpeed = level.gameSpeed;
+  this.asteroidSpeed = this.levelAsteroidSpeed;
+  this.ui.setSpeedDisplay(this.gameSpeed);
 
-    // ПОТОМ позиционируем игрока
-    this.player.x = this.world.worldWidth / 2;
-    this.player.y = this.world.worldHeight / 2;
+  this.spawnLevelObjects();
 
-    this.updateUI();
-    this.updateLevelUI();
+  this.updateUI();
+  this.updateLevelUI();
+}
 
-    // Очищаем объекты
-    this.stars = [];
-    this.powerStars = [];
-    this.asteroids = [];
-    this.particles = [];
-    this.explosions = [];
+private applyLevelWorldSettings(level: LevelConfig): void {
+  this.world.setScale(level.worldScale);
+}
 
-    console.log('this.world.scale', this.world.scale);
-    
-
-    this.spawnLevelObjects();
-  }
+private resetGameState(level: LevelConfig): void {
+  this.score = 0;
+  this.gameTime = level.duration;
+  this.player.armor = 3;
+  this.power = 0;
+  this.asteroidsDestroyed = 0;
+  this.gameWon = false;
+  
+  this.player.x = this.world.worldWidth / 2;
+  this.player.y = this.world.worldHeight / 2;
+  
+  this.stars = [];
+  this.powerStars = [];
+  this.asteroids = [];
+  this.particles = [];
+  this.explosions = [];
+}
 
   private spawnLevelObjects(): void {
     const settings = this.levelSystem.getCurrentLevel().spawnSettings;
