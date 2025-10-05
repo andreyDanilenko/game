@@ -65,3 +65,13 @@ export const GAME = {
   UI_SPEED_RANGE: { MIN: 0.5, MAX: 3.0 },
   ZOOM_RANGE: { MIN: 0.5, MAX: 3.0 }
 } as const;
+
+
+export const ENTITY_TYPES = {
+  STARS: 'stars',
+  POWER_STARS: 'powerStars', 
+  ASTEROIDS: 'asteroids',
+  PARTICLES: 'particles',
+  EXPLOSIONS: 'explosions',
+  PLAYER: 'player'
+} as const;
