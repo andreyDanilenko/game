@@ -34,6 +34,7 @@ export class Game {
   private inputController: InputController;
 
   private score = 0;
+  private level = 1;
   private gameTime = 60;
   private power = 0;
   private gameRunning = false;
@@ -136,6 +137,7 @@ export class Game {
   // Метод сброса состояния игры
   private resetGameState(level: LevelConfig): void {
     this.score = 0;
+    this.level = level.id;
     this.gameTime = level.duration;
     this.player.armor = 3;
     this.power = 0;
@@ -566,8 +568,6 @@ export class Game {
     this.gameLoop();
   }
 
-
-
   // Метод начала следующего уровня
   public startNextLevel(): void {
     const nextLevelId = this.levelSystem.getCurrentLevel().id + 1;
@@ -592,7 +592,6 @@ export class Game {
       currentScreen: 'game'
     }));
     
-    
     this.levelSystem.loadLevel(currentLevelId);
     this.startLevel(currentLevelId);
   }
@@ -600,7 +599,7 @@ export class Game {
   // Метод запуска уровня
   private startLevel(levelId: number): void {
     console.log(`🎮 StartLevel: запуск уровня ${levelId}`);
-    
+    this.ui.updateLevel(levelId)
     this.gameRunning = false;
     if (this.animationId) {
       cancelAnimationFrame(this.animationId);
@@ -722,42 +721,6 @@ export class Game {
       });
     }
 
-  // Метод показа кнопки следующего уровня
-  // private showLevelCompleteScreen(): void {
-  //   const level = this.levelSystem.getCurrentLevel();
-  //   const stats = this.levelSystem.getLevelStats();
-
-  //   mountGameScreen({
-  //     type: 'complete',
-  //     isVisible: true,
-  //     title: `УРОВЕНЬ ${level.id} ПРОЙДЕН!`,
-  //     finalScore: stats.score,
-  //     survivalTime: level.duration,
-  //     asteroidsDestroyed: stats.asteroidsDestroyed,
-  //     onButtonClick: () => {
-  //       this.startNextLevel();
-  //     }
-  //   });
-  // }
-
-  // // Метод показа экрана провала уровня
-  // private showLevelFailedScreen(): void {
-  //   const level = this.levelSystem.getCurrentLevel();
-  //   const stats = this.levelSystem.getLevelStats();
-
-  //   mountGameScreen({
-  //     type: 'failed',
-  //     isVisible: true,
-  //     title: `УРОВЕНЬ ${level.id} ПРОВАЛЕН`,
-  //     finalScore: stats.score,
-  //     survivalTime: Math.ceil(this.gameTime),
-  //     asteroidsDestroyed: stats.asteroidsDestroyed,
-  //     onButtonClick: () => {
-  //       this.cancelAnimation();
-  //       this.restartCurrentLevel();
-  //     }
-  //   });
-  // }
 
   // Метод начала игры
   public startGame(): void {
@@ -795,6 +758,7 @@ export class Game {
     }
     
     this.score = 0;
+    this.level = 1;
     this.gameTime = 60;
     this.power = 0;
     this.asteroidsDestroyed = 0;
@@ -805,7 +769,7 @@ export class Game {
     this.player.y = 300;
     this.player.armor = 3;
     
-    this.ui.showHud(false);
+    // this.ui.showHud(false);
     gameState.update(state => ({
       ...state,
       currentScreen: 'start'

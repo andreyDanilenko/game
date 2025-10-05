@@ -2,6 +2,7 @@ import { LevelObjective } from "../types/LevelTypes";
 
 export class UIManager {
   private els = {
+    level: document.getElementById('level')!,
     score: document.getElementById('score')!,
     time: document.getElementById('time')!,
     armor: document.getElementById('armor')!,
@@ -23,6 +24,10 @@ export class UIManager {
     volumeSlider: document.getElementById('volumeSlider') as HTMLButtonElement,
     muteButton: document.getElementById('muteButton') as HTMLButtonElement,
   };
+
+  updateLevel(v: number): void { 
+    this.els.level.textContent = v.toString(); 
+  }
 
   updateScore(v: number): void { 
     this.els.score.textContent = v.toString(); 
