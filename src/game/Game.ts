@@ -15,6 +15,9 @@ import { ParticleSystem } from '../systems/ParticleSystem';
 import { InputController } from './controllers/InputController';
 import { SmartAsteroid } from './objects/SmartAsteroid';
 
+import { mountGameOverScreen } from '../svelte-mount';
+
+
 export class Game {
   private canvas = document.getElementById('gameCanvas') as HTMLCanvasElement;
   private ctx = this.canvas.getContext('2d')!;
@@ -679,12 +682,28 @@ export class Game {
     const level = this.levelSystem.getCurrentLevel();
     const stats = this.levelSystem.getLevelStats();
     
-    this.ui.getElements().survivalTime.textContent = Math.ceil(this.gameTime).toString();
-    this.ui.getElements().finalScore.textContent = stats.score.toString();
-    this.ui.getElements().asteroidsDestroyed.textContent = stats.asteroidsDestroyed.toString();
-    this.ui.setGameResult(`УРОВЕНЬ ${level.id} ПРОВАЛЕН`, '#ff4444', '0 0 20px #ff4444');
+
+    mountGameOverScreen({
+      isVisible: true,
+      title: `УРОВЕНЬ ${level.id} ПРОВАЛЕН`,
+      finalScore: stats.score,
+      survivalTime: Math.ceil(this.gameTime),
+      asteroidsDestroyed: stats.asteroidsDestroyed,
+      onRestart: () => {
+        // Здесь должна быть логика перезапуска уровня
+        console.log('123');
+        
+      }
+    });
+  // showGameOver({
+  //   title: `УРОВЕНЬ ${level.id} ПРОВАЛЕН`,
+  //   finalScore: stats.score,
+  //   survivalTime: Math.ceil(this.gameTime),
+  //   asteroidsDestroyed: stats.asteroidsDestroyed
+  // });
+    // showSvelteGameOver(true);
     
-    this.showRestartLevelButton();
+    // this.showRestartLevelButton();
   }
 
   // Метод начала игры
