@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { screenData, gameState } from '../stores/gameStore';
+  import { screenData, screenState } from '../stores/gameStore';
   
   let data = $screenData.gameComplete;
   
@@ -10,10 +10,7 @@
   }
   
   function handleMainMenu() {
-    gameState.update(state => ({
-      ...state,
-      currentScreen: 'start'
-    }));
+    screenState.set('start');
   }
 </script>
 

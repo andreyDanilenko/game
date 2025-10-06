@@ -1,14 +1,8 @@
 <script lang="ts">
-    import { gameEvents } from "../events/GameEvents";
+  import { gameEvents } from "../events/GameEvents";
 
   function handleStartGame() {
-    // Пока просто меняем экран
-        gameEvents.emit('startGame');
-
-    
-    // window.dispatchEvent(new CustomEvent('gameAction', {
-    //   detail: { action: 'startGame' }
-    // }));
+    gameEvents.emit('startGame');
   }
 </script>
 

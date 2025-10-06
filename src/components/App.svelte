@@ -1,11 +1,11 @@
 <script lang="ts">
-  import { gameState } from '../stores/gameStore';
+  import { screenState } from '../stores/gameStore';
   import StartScreen from './StartScreen.svelte';
   import LevelComplete from './LevelComplete.svelte';
   import LevelFailed from './LevelFailed.svelte';
   import GameComplete from './GameComplete.svelte';
   
-  $: currentScreen = $gameState.currentScreen;
+  $: currentScreen = $screenState;
 </script>
 
 <!-- Слой UI -->

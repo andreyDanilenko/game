@@ -1,23 +1,9 @@
 <script lang="ts">
-  import { screenData, gameState } from '../stores/gameStore';
+  import { screenData } from '../stores/gameStore';
     import { gameEvents } from '../events/GameEvents';
 
   let data = $screenData.levelFailed;
   
-//   function handleRestartLevel() {
-//     window.dispatchEvent(new CustomEvent('gameAction', {
-//       detail: { action: 'restartLevel' }
-//     }));
-//   }
-  
-//   function handleMainMenu() {
-//     gameState.update(state => ({
-//       ...state,
-//       currentScreen: 'start'
-//     }));
-//   }
-
-
   function handleRestartLevel() {
     gameEvents.emit('restartLevel');
   }

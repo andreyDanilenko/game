@@ -15,7 +15,7 @@ import { ParticleSystem } from '../systems/ParticleSystem';
 import { InputController } from './controllers/InputController';
 import { SmartAsteroid } from './objects/SmartAsteroid';
 
-import { gameState, screenData } from '../stores/gameStore';
+import { screenData, screenState } from '../stores/gameStore';
 import { gameEvents } from '../events/GameEvents';
 
 export class Game {
@@ -29,7 +29,6 @@ export class Game {
   private soundSystem: SoundSystem;
   private particleSystem: ParticleSystem;
 
-   
   private entityManager: EntityManager;
   private inputController: InputController;
 
@@ -131,7 +130,6 @@ export class Game {
 
   // Метод применения настроек мира для уровня
   private applyLevelWorldSettings(level: LevelConfig): void {
-    lgo
     this.world.setScale(level.worldScale);
   }
 
@@ -440,10 +438,7 @@ export class Game {
       this.entityManager.removeEntity(ENTITY_TYPES.ASTEROIDS, asteroid);
       this.asteroidsDestroyed++;
       this.levelSystem.updateObjectiveProgress('asteroid_destroyed', 1);
-
-
       this.particleSystem.createParticles(asteroid.x, asteroid.y, 'asteroid_destroy', this.entityManager);
-
 
       this.createBouncingAsteroid();
       this.updateUI();
@@ -533,7 +528,8 @@ export class Game {
   // Метод проверки завершения уровня
   private checkLevelCompletion(): void {
     const completion = this.levelSystem.checkLevelCompletion();
-        
+    this.soundSystem.stopMusic();    
+  
     if (completion.completed) {
       this.completeLevel();
     } else {
@@ -548,7 +544,6 @@ export class Game {
       cancelAnimationFrame(this.animationId);
     }
     
-    // this.ui.showStart(false);
     this.ui.showHud(true);
     this.gameRunning = true;
     
@@ -558,12 +553,7 @@ export class Game {
       this.levelSystem.loadLevel(1);
     }
 
-    gameState.update(state => ({
-      ...state,
-      currentScreen: 'game'
-    }));
-    
-    
+    screenState.set('game');
     this.init();
     this.gameLoop();
   }
@@ -573,11 +563,7 @@ export class Game {
     const nextLevelId = this.levelSystem.getCurrentLevel().id + 1;
     console.log(`🎮 StartNextLevel: переход на уровень ${nextLevelId}`);
 
-    gameState.update(state => ({
-      ...state,
-      currentScreen: 'game'
-    }));
-    
+    screenState.set('game');
     this.levelSystem.loadLevel(nextLevelId);
     this.startLevel(nextLevelId);
   }
@@ -587,11 +573,7 @@ export class Game {
     const currentLevelId = this.levelSystem.getCurrentLevel().id;
     console.log(`🎮 RestartCurrentLevel: рестарт уровня ${currentLevelId}`);
 
-    gameState.update(state => ({
-      ...state,
-      currentScreen: 'game'
-    }));
-    
+    screenState.set('game');
     this.levelSystem.loadLevel(currentLevelId);
     this.startLevel(currentLevelId);
   }
@@ -604,13 +586,8 @@ export class Game {
     if (this.animationId) {
       cancelAnimationFrame(this.animationId);
     }
+    screenState.set('game');
 
-    gameState.update(state => ({
-      ...state,
-      currentScreen: 'game'
-    }));
-    
-    
     this.ui.showHud(true);
     this.gameRunning = true;
     this.init();
@@ -627,20 +604,18 @@ export class Game {
     this.gameRunning = false;
     if (this.animationId) cancelAnimationFrame(this.animationId);
 
-    this.soundSystem.playEffect('game_over');
-    this.soundSystem.stopMusic();
-    
-    const completion = this.levelSystem.checkLevelCompletion();
-    
-    if (completion.completed) {
-      if (this.levelSystem.hasNextLevel()) {
-        this.showLevelCompleteScreen();
-      } else {
-        this.showGameCompleteScreen();
-      }
+    // this.soundSystem.playEffect('game_over');    
+    // const completion = this.levelSystem.checkLevelCompletion();
+
+    // if (completion.completed) {
+    if (this.levelSystem.hasNextLevel()) {
+      this.showLevelCompleteScreen();
     } else {
-      this.showLevelFailedScreen();
+      this.showGameCompleteScreen();
     }
+    // } else {
+    //   this.showLevelFailedScreen();
+    // }
   }
 
   // Метод показа экрана завершения игры
@@ -655,11 +630,7 @@ export class Game {
       }
     }));
     
-    // Показываем экран
-    gameState.update(state => ({
-      ...state,
-      currentScreen: 'gameComplete'
-    }));
+    screenState.set('gameComplete');
   }
 
 
@@ -678,11 +649,7 @@ export class Game {
       }
     }));
     
-    // Показываем экран
-    gameState.update(state => ({
-      ...state,
-      currentScreen: 'levelComplete'
-    }));
+    screenState.set('levelComplete');
   }
 
   private showLevelFailedScreen(): void {
@@ -701,10 +668,7 @@ export class Game {
     }));
     
     // Показываем экран
-    gameState.update(state => ({
-      ...state,
-      currentScreen: 'levelFailed'
-    }));
+    screenState.set('levelFailed');
   }
 
   // Обработчик событий от Svelte компонентов
@@ -739,10 +703,7 @@ export class Game {
       this.levelSystem.loadLevel(1);
     }
 
-    gameState.update(state => ({
-      ...state,
-      currentScreen: 'game'
-    }));
+    screenState.set('game');
     
     this.init();
     this.gameLoop();
@@ -769,11 +730,7 @@ export class Game {
     this.player.y = 300;
     this.player.armor = 3;
     
-    // this.ui.showHud(false);
-    gameState.update(state => ({
-      ...state,
-      currentScreen: 'start'
-    }));
+    screenState.set('start');
   }
 
   // Метод перезапуска всей игры
@@ -789,7 +746,7 @@ export class Game {
       cancelAnimationFrame(this.animationId);
       this.animationId = null;
     }
-    
+    console.log('game over');
     this.showLevelFailedScreen(); 
   }
 }
