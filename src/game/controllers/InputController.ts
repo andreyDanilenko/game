@@ -51,17 +51,12 @@ export class InputController {
   // ------------------------------------------------------------
   // [2] СОБЫТИЯ МЫШИ
   // ------------------------------------------------------------
-  private registerMouseEvents(): void {
-    console.log('mouse');
-    
-    // Перемещение игрока
-    console.log(this.canvas);
-    
+  private registerMouseEvents(): void {    
+    // Перемещение игрока    
     this.canvas.addEventListener('mousemove', (e) => {
       const rect = this.canvas.getBoundingClientRect();
       this.mouseX = e.clientX - rect.left;
       this.mouseY = e.clientY - rect.top;
-      console.log('1231231dscvdsaf');
       
       const worldPos = this.world.screenToWorld(this.mouseX, this.mouseY);
 

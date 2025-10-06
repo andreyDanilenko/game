@@ -131,6 +131,7 @@ export class Game {
 
   // Метод применения настроек мира для уровня
   private applyLevelWorldSettings(level: LevelConfig): void {
+    lgo
     this.world.setScale(level.worldScale);
   }
 
@@ -543,7 +544,6 @@ export class Game {
   // Метод начала новой игры
   public startNewGame(): void {
     console.log('🎮 StartNewGame: начало новой игры с уровня 1');
-    
     if (this.gameRunning && this.animationId) {
       cancelAnimationFrame(this.animationId);
     }
@@ -572,7 +572,7 @@ export class Game {
   public startNextLevel(): void {
     const nextLevelId = this.levelSystem.getCurrentLevel().id + 1;
     console.log(`🎮 StartNextLevel: переход на уровень ${nextLevelId}`);
-    
+
     gameState.update(state => ({
       ...state,
       currentScreen: 'game'

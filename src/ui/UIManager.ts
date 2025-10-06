@@ -90,8 +90,6 @@ export class UIManager {
     const container = this.els.levelObjectives;
     
     container.innerHTML = objectives.map(obj => {
-
-      console.log(' container.innerHTML ', obj);
       if (obj.type === 'survive') return 
 
       const isCompleted = obj.current >= obj.target;
