@@ -9,14 +9,16 @@ export const LevelManifest: Record<number, LevelConfig> = {
     background: "deep_space",
     gameSpeed: 1.0,
     worldScale: 1.0,
-    duration: 5,
+    duration: 15,
     music: 'music_level10',
     difficulty: 'easy',
     objectives: [
-      { type: 'survive', target: 5, description: "Выжить 25 секунд", current: 0 },
-      { type: 'collect', target: 0, description: "Собрать 8 звезд", current: 0 }
+      { type: 'survive', target: 15, description: "Выжить 15 секунд", current: 0 },
+      { type: 'reach_score', target: 100, description: "Набрать 100 очков", current: 0},
+      { type: 'collect', target: 5, description: "Собрать 5 звезд", current: 0 },
+      { type: 'destroy', target: 1, description: "Уничтожить 1 астероид", current: 0 }
     ],
-    spawnSettings: { stars: 6, powerStars: 2, asteroids: 5 }
+    spawnSettings: { stars: 15, powerStars: 3, asteroids: 20, armor: 10 }
   },
   2: {
     id: 2,

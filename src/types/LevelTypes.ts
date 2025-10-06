@@ -16,6 +16,7 @@ export interface LevelConfig {
   music: string; 
   objectives: LevelObjective[];
   spawnSettings: {
+    armor?: number;
     stars: number;
     powerStars: number;
     asteroids: number;

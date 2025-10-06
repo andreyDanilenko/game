@@ -15,7 +15,6 @@ export class UIManager {
     zoomSlider: document.getElementById('zoomSlider') as HTMLInputElement,
     speedValue: document.getElementById('speedValue')!,
     zoomValue: document.getElementById('zoomValue')!,
-    // startButton: document.getElementById('startButton') as HTMLButtonElement,
     zoomInBtn: document.getElementById('zoomInBtn') as HTMLButtonElement,
     zoomOutBtn: document.getElementById('zoomOutBtn') as HTMLButtonElement,
     zoomResetBtn: document.getElementById('zoomResetBtn') as HTMLButtonElement,
