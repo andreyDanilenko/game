@@ -1,43 +1,81 @@
-import { writable } from 'svelte/store';
+import { writable, Writable } from 'svelte/store';
 
-type ScreenState = 'start' | 'game' | 'levelComplete' | 'gameComplete' | 'levelFailed'
+// Определяем интерфейсы
+export interface ScreenState {
+  value: 'start' | 'game' | 'levelComplete' | 'gameComplete' | 'levelFailed';
+}
 
-const initialScreenState: ScreenState = 'start';
-const initialStatState = {
+export interface StatState {
+  score: number;
+  level: number;
+  gameTime: number;
+  power: number;
+  gameRunning: boolean;
+  gameWon: boolean;
+}
+
+export interface LevelCompleteData {
+  title: string;
+  score: number;
+  asteroidsDestroyed: number;
+}
+
+export interface LevelFailedData {
+  title: string;
+  score: number;
+  survivalTime: number;
+  asteroidsDestroyed: number;
+}
+
+export interface GameCompleteData {
+  finalScore: number;
+  levelsCompleted: number;
+}
+
+export interface ScreenData {
+  levelComplete: LevelCompleteData;
+  levelFailed: LevelFailedData;
+  gameComplete: GameCompleteData;
+}
+
+// Начальные состояния
+const initialScreenState: ScreenState['value'] = 'start';
+
+const initialStatState: StatState = {
   score: 0,
   level: 1,
   gameTime: 60,
   power: 0,
   gameRunning: false,
   gameWon: false,
-  animationId: null
 };
-const initialScreenData = {
+
+const initialScreenData: ScreenData = {
   levelComplete: { title: '', score: 0, asteroidsDestroyed: 0 },
   levelFailed: { title: '', score: 0, survivalTime: 0, asteroidsDestroyed: 0 },
   gameComplete: { finalScore: 0, levelsCompleted: 0 }
 };
 
+// Создаем stores с явными типами
+export const screenState: Writable<ScreenState['value']> = writable(initialScreenState);
+export const statState: Writable<StatState> = writable(initialStatState);
+export const screenData: Writable<ScreenData> = writable(initialScreenData);
 
-export const screenState = writable(initialScreenState as ScreenState);
-export const statState = writable(initialStatState);
-export const screenData = writable(initialScreenData);
-
-export function resetStore() {
+// Функции сброса
+export function resetStore(): void {
   statState.set(initialStatState);
   screenData.set(initialScreenData);
   screenState.set(initialScreenState);
 }
 
-export function resetGame() {
+export function resetGame(): void {
   statState.set(initialStatState);
 }
 
-export function resetScreenData() {
+export function resetScreenData(): void {
   screenData.set(initialScreenData);
 }
 
-export function resetScreenState() {
+export function resetScreenState(): void {
   screenState.set(initialScreenState);
 }
-

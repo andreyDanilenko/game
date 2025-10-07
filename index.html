@@ -4,47 +4,42 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Space Survival</title>
-  <link rel="stylesheet" href="/src/styles/globals.css">
 </head>
 <body>
    <!-- Speed Control -->
-      <div class="speed-control" id="speedControl" style="display: none;">
-        <label for="speedSlider">Game Speed</label>
-        <input type="range" id="speedSlider" class="speed-slider" min="0.5" max="3" step="0.1" value="1">
-        <div class="speed-value" id="speedValue">1.0x</div>
-      </div>
-      
-      <!-- Zoom Control -->
-      <div class="zoom-control" id="zoomControl" style="display: none;">
-        <label for="zoomSlider">Camera Zoom</label>
-        <input type="range" id="zoomSlider" class="zoom-slider" min="0.5" max="3.0" step="0.1" value="1.0">
-        <div class="zoom-value" id="zoomValue">1.0x</div>
-      </div>
-
-  <div class="game-container">
-  <canvas id="gameCanvas"></canvas>
+    <div class="speed-control" id="speedControl" style="display: none;">
+      <label for="speedSlider">Game Speed</label>
+      <input type="range" id="speedSlider" class="speed-slider" min="0.5" max="3" step="0.1" value="1">
+      <div class="speed-value" id="speedValue">1.0x</div>
+    </div>
     
-    <!-- Существующий HTML UI (пока оставляем для HUD и контролов) -->
+    <!-- Zoom Control -->
+    <div class="zoom-control" id="zoomControl" style="display: none;">
+      <label for="zoomSlider">Camera Zoom</label>
+      <input type="range" id="zoomSlider" class="zoom-slider" min="0.5" max="3.0" step="0.1" value="1.0">
+      <div class="zoom-value" id="zoomValue">1.0x</div>
+    </div>
+
+  <!-- <div class="game-container">
+    <canvas id="gameCanvas"></canvas>
+    
     <div class="ui-overlay">
-      <!-- HUD -->
       <div class="hud" id="hud" style="display: none;">
         <div class="armor-display">Level: <span id="level">1</span></div>
         <div class="time-display">Time: <span id="time">60</span>s</div>
         <div class="score-display">Score: <span id="score">0</span></div>
-        <div class="armor-display">Armor: <span id="armor">3</span></div>
-        <div class="power-display">Power:
+        <div class="armor-display">: <span id="armor">3</span></div>
+        <div class="power-display">:
           <div class="power-bar">
             <div class="power-fill" id="powerFill"></div>
           </div>
         </div>
       </div>
       
-      <!-- Level Objectives -->
       <div class="level-objectives" id="levelObjectives">
-        <!-- Динамически будет заполняться через JS -->
       </div>
     </div>
-  </div>
+  </div> -->
 
   <div id="svelte-app"></div>
   

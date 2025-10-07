@@ -15,7 +15,7 @@ import { ParticleSystem } from '../systems/ParticleSystem';
 import { InputController } from './controllers/InputController';
 import { SmartAsteroid } from './objects/SmartAsteroid';
 
-import { screenData, screenState } from '../stores/gameStore';
+import { screenData, screenState, statState } from '../stores/gameStore';
 import { gameEvents } from '../events/GameEvents';
 
 export class Game {
@@ -32,12 +32,12 @@ export class Game {
   private entityManager: EntityManager;
   private inputController: InputController;
 
-  private score = 0;
-  private level = 1;
-  private gameTime = 60;
-  private power = 0;
-  private gameRunning = false;
-  private gameWon = false;
+  // private score = 0;
+  // private level = 1;
+  // private gameTime = 60;
+  // private power = 0;
+  // private gameRunning = false;
+  // private gameWon = false;
   private animationId: number | null = null;
 
   private gameSpeed = 1.0;
@@ -444,7 +444,7 @@ export class Game {
       this.updateUI();
       this.updateLevelUI();
     } else {
-      this.gameOver();
+      // this.gameOver();
     }
   }
 
@@ -531,9 +531,9 @@ export class Game {
     this.soundSystem.stopMusic();    
   
     if (completion.completed) {
-      this.completeLevel();
+      // this.completeLevel();
     } else {
-      this.failLevel();
+      // this.failLevel();
     }
   }
 
@@ -605,17 +605,12 @@ export class Game {
     if (this.animationId) cancelAnimationFrame(this.animationId);
 
     // this.soundSystem.playEffect('game_over');    
-    // const completion = this.levelSystem.checkLevelCompletion();
 
-    // if (completion.completed) {
     if (this.levelSystem.hasNextLevel()) {
       this.showLevelCompleteScreen();
     } else {
       this.showGameCompleteScreen();
     }
-    // } else {
-    //   this.showLevelFailedScreen();
-    // }
   }
 
   // Метод показа экрана завершения игры
@@ -632,8 +627,6 @@ export class Game {
     
     screenState.set('gameComplete');
   }
-
-
 
   private showLevelCompleteScreen(): void {
     const level = this.levelSystem.getCurrentLevel();
@@ -692,7 +685,6 @@ export class Game {
       cancelAnimationFrame(this.animationId);
     }
     
-    this.ui.showStart(false);
     this.ui.showHud(true);
     this.gameRunning = true;
     
