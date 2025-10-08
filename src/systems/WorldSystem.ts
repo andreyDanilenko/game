@@ -155,7 +155,7 @@ export class WorldSystem {
   private renderStarBackground(
     ctx: CanvasRenderingContext2D,
     zoomLevel: number,
-    starColor: string,
+    _starColor: string,
     starCountMultiplier: number,
     animationSpeed: number
   ): void {

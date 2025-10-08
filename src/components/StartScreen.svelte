@@ -10,21 +10,21 @@
     screenState.set('mapGame');
   }
   
-  function showStats() {
-    // переход к статистике
-  }
+  // function showStats() {
+  //   // переход к статистике
+  // }
   
-  function showRules() {
-    // переход к правилам
-  }
+  // function showRules() {
+  //   // переход к правилам
+  // }
   
-  function showCreators() {
-    // переход к создателям
-  }
+  // function showCreators() {
+  //   // переход к создателям
+  // }
   
-  function showLevelEditor() {
-    // переход к редактору уровней
-  }
+  // function showLevelEditor() {
+  //   // переход к редактору уровней
+  // }
 </script>
 
 <div class="main-menu-screen">
@@ -41,21 +41,25 @@
 
       <button class="menu-btn" on:click={startMap}>
         <span class="btn-text">Карта</span>
+        <span class="badge">BETA</span>
       </button>
       
-      <button class="menu-btn" on:click={showStats}>
+      <button class="menu-btn btn-special">
         <span class="btn-text">Статистика</span>
+        <span class="badge">SOON</span>
       </button>
       
-      <button class="menu-btn" on:click={showRules}>
+      <button class="menu-btn btn-special">
         <span class="btn-text">Правила</span>
+        <span class="badge">SOON</span>
       </button>
       
-      <button class="menu-btn" on:click={showCreators}>
+      <button class="menu-btn btn-special">
         <span class="btn-text">Создатели</span>
+        <span class="badge">SOON</span>
       </button>
       
-      <button class="menu-btn btn-special" on:click={showLevelEditor}>
+      <button class="menu-btn btn-special">
         <span class="btn-text">Собрать свой уровень</span>
         <span class="badge">SOON</span>
       </button>
@@ -165,18 +169,15 @@
     box-shadow: 0 0 20px rgba(68, 136, 255, 0.3);
   }
   
-  /* .btn-icon {
-    font-size: 1.5rem;
-    width: 30px;
-    text-align: center;
-  } */
-  
   .btn-text {
     flex-grow: 1;
     text-align: center;
   }
   
   .badge {
+    position: absolute;
+    top: -10px;
+    right: -10px;
     background: #ff4444;
     color: white;
     padding: 0.3rem 0.8rem;
