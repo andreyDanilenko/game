@@ -54,17 +54,17 @@
     <!-- Кнопки действий -->
     <div class="buttons">
       <button class="btn btn-retry" on:click={handleRestartLevel}>
-        <span class="btn-icon">🔄</span>
+        <!-- <span class="btn-icon">🔄</span> -->
         Попробовать снова
       </button>
       
       <button class="btn btn-tips" on:click={handleRetryTips}>
-        <span class="btn-icon">💡</span>
+        <!-- <span class="btn-icon">💡</span> -->
         Советы
       </button>
       
       <button class="btn btn-menu" on:click={handleMainMenu}>
-        <span class="btn-icon">🏠</span>
+        <!-- <span class="btn-icon">🏠</span> -->
         Главное меню
       </button>
     </div>
@@ -92,7 +92,8 @@
   
   .screen-content {
     background: rgba(255, 68, 68, 0.1);
-    padding: 3rem;
+    padding: 2rem;
+    margin: 20px;
     border-radius: 20px;
     border: 2px solid #ff4444;
     text-align: center;
@@ -107,7 +108,7 @@
   }
   
   .explosion {
-    font-size: 4rem;
+    font-size: 3rem;
     animation: explode 1s ease-out;
   }
   
@@ -134,14 +135,14 @@
   
   .title {
     color: #ff4444;
-    font-size: 2.5rem;
+    font-size: 1.8rem;
     margin-bottom: 0.5rem;
     text-shadow: 0 0 20px #ff4444;
   }
   
   .subtitle {
     color: #ff8888;
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
     font-size: 1.1rem;
   }
   

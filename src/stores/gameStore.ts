@@ -1,8 +1,6 @@
 import { writable, Writable } from 'svelte/store';
-
-// Определяем интерфейсы
 export interface ScreenState {
-  value: 'start' | 'game' | 'levelComplete' | 'gameComplete' | 'levelFailed';
+  value: 'start' | 'game' | 'levelComplete' | 'gameComplete' | 'levelFailed' | 'mapGame';
 }
 
 export interface StatState {
@@ -75,6 +73,7 @@ export function resetStore(): void {
   statState.set(initialStatState);
   screenData.set(initialScreenData);
   screenState.set(initialScreenState);
+  playerState.set(initialPlayerState);
 }
 
 export function resetGame(): void {

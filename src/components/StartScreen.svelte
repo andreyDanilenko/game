@@ -1,9 +1,17 @@
 <script lang="ts">
   import { gameEvents } from "../events/GameEvents";
+    import { screenState } from "../stores/gameStore";
 
   function handleStartGame() {
     gameEvents.emit('startGame');
   }
+
+  function handleMapGame() {
+    screenState.set('mapGame');
+  }
+
+
+
 </script>
 
 <div class="start-screen">
@@ -15,13 +23,9 @@
     Собирайте энергетические звезды для усиления волны!<br>
     Уклоняйтесь от астероидов или используйте броню!
   </p>
-  
-  <p class="features">
-    <strong>Управление на компьютере:</strong><br>
-    • Мышь: Корабль следует за курсором<br>
-    • ПРОБЕЛ: Энергетическая волна (тратит энергию)<br>
-  </p>
-  
+  <button class="start-button" on:click={handleMapGame}>
+    Карта
+  </button>
   <button class="start-button" on:click={handleStartGame}>
     НАЧАТЬ ИГРУ
   </button>

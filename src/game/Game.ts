@@ -1,4 +1,3 @@
-import { UIManager } from '../ui/UIManager';
 import { Player } from './objects/Player';
 import { Star } from './objects/Star';
 import { PowerStar } from './objects/PowerStar';
@@ -21,7 +20,6 @@ import { gameEvents } from '../events/GameEvents';
 export class Game {
   private canvas = document.getElementById('gameCanvas') as HTMLCanvasElement;
   private ctx = this.canvas.getContext('2d')!;
-  private ui = new UIManager();
   private player: Player;
 
   private world: WorldSystem;
@@ -57,7 +55,7 @@ export class Game {
     this.particleSystem = new ParticleSystem();
     this.entityManager = new EntityManager();
 
-    this.inputController = new InputController(this.canvas, this, this.ui, this.player, this.world);
+    this.inputController = new InputController(this.canvas, this, this.player, this.world);
     this.setupGameEventListeners();
   }
 
@@ -69,11 +67,6 @@ export class Game {
   // Метод для изменения уровня масштабирования
   public adjustZoom(delta: number): void {
     this.setWorldZoom(this.currentZoomLevel + delta);
-  }
-
-  // Метод для сброса масштабирования
-  public resetZoom(): void {
-    this.resetWorldZoom();
   }
 
   // Метод для установки скорости игры
@@ -90,24 +83,6 @@ export class Game {
   public setWorldZoom(zoomLevel: number): void {
     this.currentZoomLevel = Math.max(0.5, Math.min(3.0, zoomLevel));
     this.world.setScale(this.currentZoomLevel);
-    
-    if (this.ui.setZoomDisplay) {
-      this.ui.setZoomDisplay(this.currentZoomLevel);
-    }
-  }
-
-  // Метод для сброса масштаба мира
-  public resetWorldZoom(): void {
-    this.currentZoomLevel = 1.0;
-    this.world.setScale(1.0);
-    
-    const elements = this.ui.getElements();
-    if (elements.zoomSlider) {
-      elements.zoomSlider.value = '1.0';
-    }
-    if (this.ui.setZoomDisplay) {
-      this.ui.setZoomDisplay(1.0);
-    }
   }
 
   // Метод инициализации игры
@@ -121,8 +96,6 @@ export class Game {
     this.gameSpeed = 1.0;
     this.levelAsteroidSpeed = level.gameSpeed;
     this.asteroidSpeed = this.levelAsteroidSpeed;
-    this.ui.setSpeedDisplay(this.gameSpeed);
-
     this.spawnLevelObjects();
     this.updateUI();
     this.updateLevelUI();
@@ -135,6 +108,8 @@ export class Game {
 
   // Метод сброса состояния игры
   private resetGameState(level: LevelConfig): void {
+    console.log('resetGameState');
+    // resetStore()
     this.score = 0;
     this.level = level.id;
     this.gameTime = level.duration;
@@ -376,8 +351,10 @@ export class Game {
   private updateLevelUI(): void {
     const level = this.levelSystem.getCurrentLevel();
     const progress = this.levelSystem.getLevelProgress();
-    this.ui.updateLevelObjectives(level.objectives);
-    this.ui.updateLevelInfo(level.name, progress);
+
+    
+    // this.ui.updateLevelObjectives(level.objectives);
+    // this.ui.updateLevelInfo(level.name, progress);
   }
 
   // Метод проверки столкновений
@@ -459,7 +436,7 @@ export class Game {
       this.updateUI();
       this.updateLevelUI();
     } else {
-      // this.gameOver();
+      this.gameOver();
     }
   }
 
@@ -613,17 +590,13 @@ export class Game {
     this.gameLoop();
   }
 
-  // Метод обработки провала уровня
   private failLevel(): void {
     this.gameOver();
   }
 
-  // Метод завершения уровня
   private completeLevel(): void {
     this.gameRunning = false;
     if (this.animationId) cancelAnimationFrame(this.animationId);
-
-    // this.soundSystem.playEffect('game_over');    
 
     if (this.levelSystem.hasNextLevel()) {
       this.showLevelCompleteScreen();
@@ -632,7 +605,6 @@ export class Game {
     }
   }
 
-  // Метод показа экрана завершения игры
   private showGameCompleteScreen(): void {
     const stats = this.levelSystem.getLevelStats();
 
@@ -651,7 +623,6 @@ export class Game {
     const level = this.levelSystem.getCurrentLevel();
     const stats = this.levelSystem.getLevelStats();
 
-    // Заполняем данные для экрана завершения уровня
     screenData.update(data => ({
       ...data,
       levelComplete: {
@@ -668,7 +639,6 @@ export class Game {
     const level = this.levelSystem.getCurrentLevel();
     const stats = this.levelSystem.getLevelStats();
 
-    // Заполняем данные для экрана провала
     screenData.update(data => ({
       ...data,
       levelFailed: {

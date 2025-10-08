@@ -5,22 +5,24 @@
   import LevelFailed from './LevelFailed.svelte';
   import GameComplete from './GameComplete.svelte';
     import HubPanel from './HubPanel.svelte';
+    import LevelObjectives from './LevelObjectives.svelte';
+    import LevelMap from './LevelMap/LevelMap.svelte';
   
   $: currentScreen = $screenState;
 </script>
 
 <div class="game-container">
   <canvas id="gameCanvas"></canvas>
-  <div class="ui-overlay">
-    <div class="level-objectives" id="levelObjectives"></div>
-  </div>
 </div>
 
 <div class="svelte-ui-layer">
   {#if currentScreen === 'start'}
     <StartScreen class="interactive" />
+  {:else if currentScreen === 'mapGame'}
+    <LevelMap class="interactive" />
   {:else if currentScreen === 'game'}
     <HubPanel class="interactive" />
+    <LevelObjectives />
   {:else if currentScreen === 'levelComplete'}
     <LevelComplete class="interactive" />
   {:else if currentScreen === 'levelFailed'}
