@@ -21,10 +21,8 @@ function handleClick() {
   class="planet-container" 
   style="left: {(index + 1) * 20}%"
 >
-  <!-- Орбита -->
   <div class="orbit"></div>
   
-  <!-- Планета -->
   <div 
     class="planet level-{level.id} {level.difficulty} {isUnlocked ? 'unlocked' : 'locked'}"
     on:click={handleClick}
@@ -76,6 +74,7 @@ function handleClick() {
     top: 50%;
     transform: translate(-50%, -50%);
     transition: all 0.3s ease;
+    pointer-events: all;
   }
 
   .orbit {

@@ -1,16 +1,16 @@
 <script lang="ts">
-  import { gameEvents } from '../events/GameEvents';
-  import { screenData, screenState } from '../stores/gameStore';
-  
-  let data = $screenData.gameComplete;
-  
-  function handleRestartGame() {
-    gameEvents.emit('restartGame');
-  }
-  
-  function handleMainMenu() {
-    screenState.set('start');
-  }
+import { gameEvents } from '../events/GameEvents';
+import { screenData, screenState } from '../stores/gameStore';
+
+let data = $screenData.gameComplete;
+
+function handleRestartGame() {
+  gameEvents.emit('restartGame');
+}
+
+function handleMainMenu() {
+  screenState.set('start');
+}
 </script>
 
 <div class="game-complete-screen">

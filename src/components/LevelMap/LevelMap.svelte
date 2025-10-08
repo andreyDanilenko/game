@@ -8,8 +8,7 @@
 
   export let completedLevels = 0;
 
-  function handleStartLevel(event: CustomEvent) {
-    console.log('Starting level:', event.detail.levelId);
+  function handleStartLevel() {
     gameEvents.emit('startGame');
   }
 </script>
