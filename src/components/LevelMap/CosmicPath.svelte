@@ -1,7 +1,6 @@
 <script lang="ts">
   import type { LevelConfig } from '../../stores/levels';
   import PlanetLevel from './PlanetLevel.svelte';
-  import Spaceship from './Spaceship.svelte';
   
   export let levels: LevelConfig[];
   export let completedLevels: number;
@@ -10,7 +9,6 @@
 <div class="cosmic-path">
   <div class="path-line"></div>
   
-  <!-- Планеты-уровни -->
   {#each levels as level, index}
     <PlanetLevel 
       {level}
@@ -19,9 +17,6 @@
       on:startLevel
     />
   {/each}
-
-  <!-- Космический корабль -->
-  <Spaceship {completedLevels} />
 </div>
 
 <style>

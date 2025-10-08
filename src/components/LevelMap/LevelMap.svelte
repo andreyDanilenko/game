@@ -1,16 +1,15 @@
 <script lang="ts">
-import SpaceBackground from './SpaceBackground.svelte';
-import MapHeader from './MapHeader.svelte';
-import CosmicPath from './CosmicPath.svelte';
-import LevelInfoPanel from './LevelInfoPanel.svelte';
-import { gameEvents } from '../../events/GameEvents';
-import { levels } from '../../stores/levels';
+  import SpaceBackground from './SpaceBackground.svelte';
+  import MapHeader from './MapHeader.svelte';
+  import CosmicPath from './CosmicPath.svelte';
+  import LevelInfoPanel from './LevelInfoPanel.svelte';
+  import { gameEvents } from '../../events/GameEvents';
+  import { levels } from '../../stores/levels';
 
   export let completedLevels = 0;
 
-  function handleStartLevel() {
-    console.log('12');
-    
+  function handleStartLevel(event: CustomEvent) {
+    console.log('Starting level:', event.detail.levelId);
     gameEvents.emit('startGame');
   }
 </script>

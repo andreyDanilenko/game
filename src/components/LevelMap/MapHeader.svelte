@@ -1,10 +1,9 @@
 <script lang="ts">
-  import { gameEvents } from "../../events/GameEvents";
+import { gameEvents } from "../../events/GameEvents";
 
-  function handleMainMenu() {
+function handleMainMenu() {
     gameEvents.emit('mainMenu');
-  }
-
+}
 </script>
 
 <div class="map-header">
@@ -25,13 +24,6 @@
     padding: 0 3rem;
     z-index: 10;
   }
-
-  /* .galaxy-title {
-    font-size: 1.5rem;
-    color: white;
-    text-shadow: 0 0 20px #ff00ff, 0 0 40px #00ffff;
-    margin: 0;
-  } */
 
   .back-button {
     background: rgba(255, 255, 255, 0.1);

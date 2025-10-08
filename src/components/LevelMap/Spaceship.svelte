@@ -1,8 +1,13 @@
 <script lang="ts">
   export let completedLevels: number;
+  export let position: { x: number; y: number } = { x: 0, y: 0 };
+  
 </script>
 
-<div class="spaceship" style="left: {(completedLevels + 1) * 20}%">
+<div 
+  class="spaceship" 
+  style="transform: translate({position.x}px, {position.y}px)"
+>
   <div class="ship-body">🚀</div>
   <div class="ship-glow"></div>
 </div>
@@ -10,10 +15,11 @@
 <style>
   .spaceship {
     position: absolute;
-    top: 50%;
-    transform: translate(-50%, -50%);
+    top: 0;
+    left: 0;
     transition: all 1s ease;
     z-index: 5;
+    pointer-events: none;
   }
 
   .ship-body {

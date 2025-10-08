@@ -1,28 +1,20 @@
 <script lang="ts">
-  import type { LevelConfig } from '../../stores/levels';
-  
-  export let level: LevelConfig;
-  export let index: number;
-  export let completedLevels: number;
+import { createEventDispatcher } from 'svelte';
+import type { LevelConfig } from '../../stores/levels';
 
-  const isUnlocked = index <= completedLevels;
+const dispatch = createEventDispatcher();
 
-  function handleClick() {
-    if (isUnlocked) {
-      dispatch('startLevel', level.id);
+export let level: LevelConfig;
+export let index: number;
+export let completedLevels: number;
+
+const isUnlocked = index <= completedLevels;
+
+function handleClick() {
+    if (isUnlocked) {        
+        dispatch('startLevel', level.id);
     }
-  }
-
-  function createEventDispatcher() {
-    return {
-      dispatch: (type: string, detail?: any) => {
-        const event = new CustomEvent(type, { detail });
-        document.dispatchEvent(event);
-      }
-    };
-  }
-
-  const { dispatch } = createEventDispatcher();
+}
 </script>
 
 <div 
@@ -75,6 +67,7 @@
       </div>
     </div>
   {/if}
+  
 </div>
 
 <style>
