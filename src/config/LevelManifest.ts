@@ -66,7 +66,7 @@ export const LevelManifest: Record<number, LevelConfig> = {
     difficulty: 'easy',
     objectives: [
       { type: 'survive', target: 40, description: "Выжить 40 секунд", current: 0 },
-      { type: 'collect', target: 140, description: "Собрать 140 звезд", current: 0 }
+      { type: 'collect', target: 100, description: "Собрать 100 звезд", current: 0 }
     ],
     spawnSettings: { stars: 19, powerStars: 2, asteroids: 7, deathAsteroids: 2  }
   },
@@ -77,14 +77,14 @@ export const LevelManifest: Record<number, LevelConfig> = {
     background: "nebula",
     gameSpeed: 1.1,
     worldScale: 1.7,
-    duration: 50,
+    duration: 55,
     music: 'music_level6',
     difficulty: 'easy',
     objectives: [
       { type: 'destroy', target: 20, description: "Уничтожить 20 астероидов", current: 0 },
-      { type: 'collect', target: 100, description: "Собрать 100 звезд", current: 0 }
+      { type: 'collect', target: 100, description: "Собрать 120 звезд", current: 0 }
     ],
-    spawnSettings: { stars: 15, powerStars: 3, asteroids: 12 }
+    spawnSettings: { stars: 15, powerStars: 5, asteroids: 12 }
   },
   6: {
     id: 6, 
