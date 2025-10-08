@@ -14,6 +14,7 @@ $: objectivesLevel = $objectives;
 
 <style>
   .level-objectives {
+    opacity: 0.5;
     position: absolute;
     top: 20px;
     right: 20px;

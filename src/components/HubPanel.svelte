@@ -51,6 +51,7 @@ $: powerPercent = Math.min(100, Math.max(0, power));
   }
 
   .hud {
+    opacity: 0.5;
     background: rgba(0, 0, 0, 0.3);
     color: white;
     font-size: 12px;
