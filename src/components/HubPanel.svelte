@@ -61,7 +61,6 @@ $: powerPercent = Math.min(100, Math.max(0, power));
     backdrop-filter: blur(10px);
     display: flex;
     flex-direction: column;
-    gap: 8px;
     margin: 20px;
     border: 1px solid rgba(255, 255, 255, 0.1);
   }

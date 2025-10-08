@@ -4,11 +4,11 @@
   import LevelComplete from './LevelComplete.svelte';
   import LevelFailed from './LevelFailed.svelte';
   import GameComplete from './GameComplete.svelte';
-    import HubPanel from './HubPanel.svelte';
-    import LevelObjectives from './LevelObjectives.svelte';
-    import LevelMap from './LevelMap/LevelMap.svelte';
+  import HubPanel from './HubPanel.svelte';
+  import LevelObjectives from './LevelObjectives.svelte';
+  import LevelMap from './LevelMap/LevelMap.svelte';
   
-  $: currentScreen = $screenState;
+  $: currentScreen  = $screenState;
 </script>
 
 <div class="game-container">
@@ -43,10 +43,10 @@
     justify-content: center;
   }
 
-  .svelte-ui-layer :global(.interactive),
-  .svelte-ui-layer :global(button),
-  .svelte-ui-layer :global(input),
-  .svelte-ui-layer :global(select) {
-    pointer-events: all;
-  }
+.interactive,
+.svelte-ui-layer :global(button),
+.svelte-ui-layer :global(input),
+.svelte-ui-layer :global(select) {
+  pointer-events: all;
+}
 </style>

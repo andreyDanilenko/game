@@ -11,12 +11,6 @@
   function handleMainMenu() {
     gameEvents.emit('mainMenu');
   }
-
-  
-  function handleRetryTips() {
-    // Можно добавить советы по прохождению
-    alert('💡 Советы:\n• Собирайте энергетические звезды для усиления волны\n• Используйте броню для защиты\n• Управляйте кораблем плавно');
-  }
 </script>
 
 <div class="level-failed-screen">
@@ -54,24 +48,17 @@
     <!-- Кнопки действий -->
     <div class="buttons">
       <button class="btn btn-retry" on:click={handleRestartLevel}>
-        <!-- <span class="btn-icon">🔄</span> -->
         Попробовать снова
       </button>
       
-      <button class="btn btn-tips" on:click={handleRetryTips}>
-        <!-- <span class="btn-icon">💡</span> -->
-        Советы
-      </button>
-      
       <button class="btn btn-menu" on:click={handleMainMenu}>
-        <!-- <span class="btn-icon">🏠</span> -->
         Главное меню
       </button>
     </div>
     
     <!-- Мотивационное сообщение -->
     <div class="motivation">
-      "Каждая неудача - шаг к успеху! 🚀"
+      "Каждая неудача - шаг к успеху!"
     </div>
   </div>
 </div>
@@ -108,6 +95,9 @@
   }
   
   .explosion {
+    position: absolute;
+    top: -10px;
+    left: -20px;
     font-size: 3rem;
     animation: explode 1s ease-out;
   }
@@ -149,7 +139,7 @@
   .stats {
     margin: 2rem 0;
     background: rgba(255, 255, 255, 0.1);
-    padding: 1.5rem;
+    padding: 0.5rem;
     border-radius: 10px;
   }
   
@@ -157,10 +147,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 0.8rem 0;
     padding: 0.5rem;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 5px;
   }
   
   .stat-label {

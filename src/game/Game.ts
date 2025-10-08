@@ -240,12 +240,8 @@ export class Game {
   // Метод взрыва всех объектов
   private explodeAllObjects(): void {
     const explosionPower = this.power;
-    console.log('power');
     
-    // this.power = 0;
-
-    // this.ui.updatePower(this.power)
-    // this.ui.updatePower(0);
+    this.power = 0;
 
     statState.update(state => ({
       ...state, 
@@ -627,6 +623,7 @@ export class Game {
       ...data,
       levelComplete: {
         title: `УРОВЕНЬ ${level.id} ПРОЙДЕН!`,
+        survivalTime: level.duration,
         score: stats.score,
         asteroidsDestroyed: stats.asteroidsDestroyed
       }

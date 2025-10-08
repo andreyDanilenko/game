@@ -1,16 +1,14 @@
 <script lang="ts">
-  import { gameEvents } from "../events/GameEvents";
-    import { screenState } from "../stores/gameStore";
+import { gameEvents } from "../events/GameEvents";
+import { screenState } from "../stores/gameStore";
 
-  function handleStartGame() {
-    gameEvents.emit('startGame');
-  }
+function handleStartGame() {
+  gameEvents.emit('startGame');
+}
 
-  function handleMapGame() {
-    screenState.set('mapGame');
-  }
-
-
+function handleMapGame() {
+  screenState.set('mapGame');
+}
 
 </script>
 
@@ -24,7 +22,7 @@
     Уклоняйтесь от астероидов или используйте броню!
   </p>
   <button class="start-button" on:click={handleMapGame}>
-    Карта
+    КАРТА
   </button>
   <button class="start-button" on:click={handleStartGame}>
     НАЧАТЬ ИГРУ

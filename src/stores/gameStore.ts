@@ -19,6 +19,7 @@ export interface PlayerState {
 export interface LevelCompleteData {
   title: string;
   score: number;
+  survivalTime: number;
   asteroidsDestroyed: number;
 }
 
@@ -57,7 +58,7 @@ const initialStatState: StatState = {
 };
 
 const initialScreenData: ScreenData = {
-  levelComplete: { title: '', score: 0, asteroidsDestroyed: 0 },
+  levelComplete: { title: '', score: 0, survivalTime: 0, asteroidsDestroyed: 0 },
   levelFailed: { title: '', score: 0, survivalTime: 0, asteroidsDestroyed: 0 },
   gameComplete: { finalScore: 0, levelsCompleted: 0 }
 };
