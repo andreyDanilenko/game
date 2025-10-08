@@ -14,6 +14,10 @@ export interface StatState {
   gameWon: boolean;
 }
 
+export interface PlayerState {
+  armor: number;
+}
+
 export interface LevelCompleteData {
   title: string;
   score: number;
@@ -40,6 +44,10 @@ export interface ScreenData {
 
 // Начальные состояния
 const initialScreenState: ScreenState['value'] = 'start';
+const initialPlayerState: PlayerState = {
+  armor: 0
+}
+
 
 const initialStatState: StatState = {
   score: 0,
@@ -58,6 +66,7 @@ const initialScreenData: ScreenData = {
 
 // Создаем stores с явными типами
 export const screenState: Writable<ScreenState['value']> = writable(initialScreenState);
+export const playerState: Writable<PlayerState> = writable(initialPlayerState);
 export const statState: Writable<StatState> = writable(initialStatState);
 export const screenData: Writable<ScreenData> = writable(initialScreenData);
 

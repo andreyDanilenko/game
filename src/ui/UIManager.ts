@@ -40,15 +40,9 @@ export class UIManager {
     this.els.armor.textContent = v.toString(); 
   }
   
-  updatePower(v: number): void { 
-    this.els.powerFill.style.width = `${v}%`; 
-  }
-
-  showHud(show: boolean): void {
-    this.els.hud.style.display = show ? 'block' : 'none';
-    this.els.speedControl.style.display = show ? 'block' : 'none';
-    this.els.zoomControl.style.display = show ? 'block' : 'none';
-  }
+  // updatePower(v: number): void { 
+  //   this.els.powerFill.style.width = `${v}%`; 
+  // }
 
   showStart(show: boolean): void {
     this.els.startScreen.style.display = show ? 'flex' : 'none';

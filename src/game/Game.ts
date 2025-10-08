@@ -15,7 +15,7 @@ import { ParticleSystem } from '../systems/ParticleSystem';
 import { InputController } from './controllers/InputController';
 import { SmartAsteroid } from './objects/SmartAsteroid';
 
-import { screenData, screenState, statState } from '../stores/gameStore';
+import { playerState, screenData, screenState, statState } from '../stores/gameStore';
 import { gameEvents } from '../events/GameEvents';
 
 export class Game {
@@ -32,12 +32,12 @@ export class Game {
   private entityManager: EntityManager;
   private inputController: InputController;
 
-  // private score = 0;
-  // private level = 1;
-  // private gameTime = 60;
-  // private power = 0;
-  // private gameRunning = false;
-  // private gameWon = false;
+  private score = 0;
+  private level = 1;
+  private gameTime = 60;
+  private power = 0;
+  private gameRunning = false;
+  private gameWon = false;
   private animationId: number | null = null;
 
   private gameSpeed = 1.0;
@@ -265,9 +265,17 @@ export class Game {
   // Метод взрыва всех объектов
   private explodeAllObjects(): void {
     const explosionPower = this.power;
+    console.log('power');
     
-    this.power = 0;
-    this.ui.updatePower(0);
+    // this.power = 0;
+
+    // this.ui.updatePower(this.power)
+    // this.ui.updatePower(0);
+
+    statState.update(state => ({
+      ...state, 
+      power: this.power,
+    }));
     
     this.createExplosionWave(this.player.x, this.player.y, explosionPower, '#ff66ff');
     this.destroyObjectsInRadius(this.player.x, this.player.y, explosionPower);
@@ -351,10 +359,17 @@ export class Game {
 
   // Метод обновления интерфейса
   private updateUI(): void {
-    this.ui.updateScore(this.score);
-    this.ui.updateTime(this.gameTime);
-    this.ui.updateArmor(this.player.armor);
-    this.ui.updatePower(this.power);
+    const armor = this.player.armor
+    statState.update(state => ({
+      ...state, 
+      score: this.score,
+      power: this.power,
+    }));
+
+    playerState.update(state => ({
+      ...state, 
+      armor
+    }));
   }
 
   // Метод обновления интерфейса уровня
@@ -457,9 +472,9 @@ export class Game {
     if (this.gameTime > 0 && !this.gameWon) {
       this.gameTime -= 1 / 60;
       this.levelSystem.updateObjectiveProgress('time', 1/60);
-      this.ui.updateTime(this.gameTime);
+      statState.update(state => ({...state, gameTime: this.gameTime }));
       
-      if (this.gameTime <= 0) {
+      if (this.gameTime <= 0) {        
         this.checkLevelCompletion();
         return;
       }
@@ -467,7 +482,10 @@ export class Game {
 
     if (this.power < 100) {
       this.power += 0.5;
-      this.ui.updatePower(this.power);
+      statState.update(state => ({
+        ...state, 
+        power: this.power,
+      }));
     }
 
     const worldBounds = {
@@ -531,9 +549,9 @@ export class Game {
     this.soundSystem.stopMusic();    
   
     if (completion.completed) {
-      // this.completeLevel();
+      this.completeLevel();
     } else {
-      // this.failLevel();
+      this.failLevel();
     }
   }
 
@@ -544,7 +562,6 @@ export class Game {
       cancelAnimationFrame(this.animationId);
     }
     
-    this.ui.showHud(true);
     this.gameRunning = true;
     
     if (!this.levelSystem) {
@@ -581,14 +598,16 @@ export class Game {
   // Метод запуска уровня
   private startLevel(levelId: number): void {
     console.log(`🎮 StartLevel: запуск уровня ${levelId}`);
-    this.ui.updateLevel(levelId)
+    statState.update(state => ({
+      ...state, 
+      level: this.level,
+    }));
     this.gameRunning = false;
     if (this.animationId) {
       cancelAnimationFrame(this.animationId);
     }
     screenState.set('game');
 
-    this.ui.showHud(true);
     this.gameRunning = true;
     this.init();
     this.gameLoop();
@@ -685,7 +704,6 @@ export class Game {
       cancelAnimationFrame(this.animationId);
     }
     
-    this.ui.showHud(true);
     this.gameRunning = true;
     
     if (!this.levelSystem) {
