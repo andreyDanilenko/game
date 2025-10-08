@@ -165,11 +165,11 @@
     box-shadow: 0 0 20px rgba(68, 136, 255, 0.3);
   }
   
-  .btn-icon {
+  /* .btn-icon {
     font-size: 1.5rem;
     width: 30px;
     text-align: center;
-  }
+  } */
   
   .btn-text {
     flex-grow: 1;

@@ -23,29 +23,30 @@ function handleClick() {
 >
   <div class="orbit"></div>
   
-  <div 
-    class="planet level-{level.id} {level.difficulty} {isUnlocked ? 'unlocked' : 'locked'}"
-    on:click={handleClick}
-  >
-    <div class="planet-surface">
-      <div class="planet-crater"></div>
-      <div class="planet-crater"></div>
-      <div class="planet-crater"></div>
-    </div>
-    <div class="planet-glow"></div>
-    
-    <!-- Номер уровня -->
-    <div class="level-number">{level.id}</div>
-    
-    <!-- Иконка сложности -->
-    <div class="difficulty-badge">
-      {#if level.difficulty === 'easy'}🌱
-      {:else if level.difficulty === 'medium'}🚀  
-      {:else}☄️
-      {/if}
-    </div>
-  </div>
+    <button 
+        class="planet level-{level.id} {level.difficulty} {isUnlocked ? 'unlocked' : 'locked'}"
+        on:click={handleClick}
+        disabled={!isUnlocked}
+        type="button"
+        >
+        <div class="planet-surface">
+        <div class="planet-crater"></div>
+        <div class="planet-crater"></div>
+        <div class="planet-crater"></div>
+        </div>
+        <div class="planet-glow"></div>
 
+        <!-- Номер уровня -->
+        <div class="level-number">{level.id}</div>
+
+        <!-- Иконка сложности -->
+        <div class="difficulty-badge">
+        {#if level.difficulty === 'easy'}🌱
+        {:else if level.difficulty === 'medium'}🚀  
+        {:else}☄️
+        {/if}
+    </div>
+    </button>
   <!-- Информация об уровне при наведении -->
   {#if isUnlocked}
     <div class="level-tooltip">
@@ -221,11 +222,6 @@ function handleClick() {
     pointer-events: none;
     transition: all 0.3s ease;
     backdrop-filter: blur(10px);
-  }
-
-  .planet:hover .level-tooltip {
-    opacity: 1;
-    transform: translateX(-50%) translateY(-10px);
   }
 
   .level-tooltip h3 {

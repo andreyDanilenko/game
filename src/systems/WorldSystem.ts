@@ -143,12 +143,12 @@ export class WorldSystem {
       case 'stars':
         this.renderStarBackground(ctx, zoomLevel, starColor, starCountMultiplier, animationSpeed);
         break;
-      case 'grid':
-        this.renderGridBackground(ctx, zoomLevel, starColor);
-        break;
-      case 'nebula':
-        this.renderNebulaBackground(ctx, zoomLevel);
-        break;
+      // case 'grid':
+      //   this.renderGridBackground(ctx, zoomLevel, starColor);
+      //   break;
+      // case 'nebula':
+      //   this.renderNebulaBackground(ctx, zoomLevel);
+      //   break;
     }
   }
 
@@ -172,13 +172,13 @@ export class WorldSystem {
     }
   }
 
-  private renderGridBackground(ctx: CanvasRenderingContext2D, zoomLevel: number, color: string): void {
-    // логика сетки
-  }
+  // private renderGridBackground(ctx: CanvasRenderingContext2D, zoomLevel: number, color: string): void {
+  //   // логика сетки
+  // }
 
-  private renderNebulaBackground(ctx: CanvasRenderingContext2D, zoomLevel: number): void {
-    // логика туманности
-  }
+  // private renderNebulaBackground(ctx: CanvasRenderingContext2D, zoomLevel: number): void {
+  //   // логика туманности
+  // }
 
   clearCanvas(ctx: CanvasRenderingContext2D, backgroundColor: string = '#0a0a1a'): void {
     ctx.fillStyle = backgroundColor;

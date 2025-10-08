@@ -2,7 +2,7 @@ import { Asteroid } from "./Asteroid";
 
 export class SmartAsteroid extends Asteroid {
   private lifeTime = 10 * 60; // живет 10 секунд (в кадрах)
-  private immortal = true;    // не уничтожается от взрыва
+  // private immortal = true;    // не уничтожается от взрыва
   markedForRemoval = false;   // флаг удаления
 
   constructor(x: number, y: number, radius: number, vx: number, vy: number) {

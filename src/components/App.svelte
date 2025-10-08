@@ -17,18 +17,18 @@ $: currentScreen  = $screenState;
 
 <div class="svelte-ui-layer">
   {#if currentScreen === 'start'}
-    <StartScreen class="interactive" />
+    <StartScreen />
   {:else if currentScreen === 'mapGame'}
-    <LevelMap class="interactive" />
+    <LevelMap />
   {:else if currentScreen === 'game'}
-    <HubPanel class="interactive" />
+    <HubPanel  />
     <LevelObjectives />
   {:else if currentScreen === 'levelComplete'}
-    <LevelComplete class="interactive" />
+    <LevelComplete  />
   {:else if currentScreen === 'levelFailed'}
-    <LevelFailed class="interactive" />
+    <LevelFailed  />
   {:else if currentScreen === 'gameComplete'}
-    <GameComplete class="interactive" />
+    <GameComplete  />
   {/if}
 </div>
 
@@ -43,7 +43,6 @@ $: currentScreen  = $screenState;
   justify-content: center;
 }
 
-.interactive,
 .svelte-ui-layer :global(button),
 .svelte-ui-layer :global(input),
 .svelte-ui-layer :global(select) {

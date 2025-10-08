@@ -29,6 +29,7 @@ export class Game {
   private particleSystem: ParticleSystem;
 
   private entityManager: EntityManager;
+  //@ts-ignore
   private inputController: InputController;
 
   private score = 0;
@@ -309,7 +310,7 @@ export class Game {
     type: typeof ENTITY_TYPES.STARS | typeof ENTITY_TYPES.POWER_STARS,
     particleColor: string,
     particleCount: number,
-    points: number
+    _points: number
   ): number {
     const stars = type === ENTITY_TYPES.STARS ? this.entityManager.stars : this.entityManager.powerStars;
     const starsToRemove = stars.filter(star => {

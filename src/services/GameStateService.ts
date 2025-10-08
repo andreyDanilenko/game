@@ -185,6 +185,7 @@ export class GameStateService {
     this.setLevelCompleteData({
       title: `Level ${stats.level} Complete!`,
       score: stats.score,
+      survivalTime: 0,
       asteroidsDestroyed
     });
     this.setScreen('levelComplete');
@@ -214,7 +215,7 @@ export class GameStateService {
   }
 
   public restartLevel(): void {
-    const stats = this.getStats();
+    // const stats = this.getStats();
     this.updateStats({
       gameTime: 60,
       gameRunning: true
