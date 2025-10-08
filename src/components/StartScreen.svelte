@@ -62,7 +62,7 @@
     </div>
     
     <div class="footer">
-      <div class="version">Версия 1.0.0</div>
+      <div class="version">Версия 1.4.1</div>
     </div>
   </div>
 </div>
