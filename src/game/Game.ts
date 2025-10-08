@@ -489,8 +489,8 @@ export class Game {
     this.world.applyWorldTransform();
     this.world.renderBackground(this.ctx, {
       zoomLevel: this.currentZoomLevel,
-      starColor: 'rgba(255,255,255,0.2)',
-      starCountMultiplier: 150
+      starColor: 'rgba(255,255,255,0.5)',
+      starCountMultiplier: 750
     });
   
 

@@ -159,16 +159,63 @@ export class WorldSystem {
     starCountMultiplier: number,
     animationSpeed: number
   ): void {
-    ctx.fillStyle = starColor;
-    const starCount = starCountMultiplier * zoomLevel;
+    const starCount = Math.floor(starCountMultiplier * zoomLevel);
+    
+    // Используем seed для стабильного рандома при любом размере экрана
+    const seed = 12345; // фиксированный seed для одинакового распределения
     
     for (let i = 0; i < starCount; i++) {
-      const x = (i * 41) % this.worldWidth;
-      const y = (i * 67) % this.worldHeight;
-      const size = Math.sin(Date.now() * animationSpeed + i) * 0.3 + 1;
-      ctx.beginPath();
-      ctx.arc(x, y, size, 0, Math.PI * 2);
-      ctx.fill();
+      // Псевдо-рандом на основе seed и индекса
+      const random1 = Math.sin(i * 12.9898 + seed) * 43758.5453;
+      const random2 = Math.cos(i * 78.233 + seed) * 43758.5453;
+      const random3 = Math.sin(i * 45.164 + seed) * 43758.5453;
+      
+      const fract1 = random1 - Math.floor(random1);
+      const fract2 = random2 - Math.floor(random2);
+      const fract3 = random3 - Math.floor(random3);
+      
+      // Равномерное распределение по всему пространству
+      const baseX = fract1 * this.worldWidth;
+      const baseY = fract2 * this.worldHeight;
+      
+      // Разные типы звезд с рандомными параметрами
+      const starType = Math.floor(fract3 * 4);
+      const timeOffset = Date.now() * animationSpeed + i * 0.1;
+      
+      switch (starType) {
+        case 0: // Мелкие белые звезды (60%)
+          ctx.fillStyle = `rgba(255, 255, 255, ${0.2 + Math.sin(timeOffset) * 0.15})`;
+          ctx.beginPath();
+          ctx.arc(baseX, baseY, 0.3 + fract1 * 0.7, 0, Math.PI * 2);
+          ctx.fill();
+          break;
+          
+        case 1: // Средние голубые звезды (25%)
+          ctx.fillStyle = `rgba(180, 220, 255, ${0.4 + Math.sin(timeOffset * 1.3) * 0.25})`;
+          ctx.beginPath();
+          ctx.arc(baseX, baseY, 0.8 + fract2 * 1.2, 0, Math.PI * 2);
+          ctx.fill();
+          break;
+          
+        case 2: // Крупные желтые звезды (10%)
+          ctx.fillStyle = `rgba(255, 255, 180, ${0.5 + Math.sin(timeOffset * 0.8) * 0.3})`;
+          ctx.beginPath();
+          ctx.arc(baseX, baseY, 1.5 + fract3 * 1.5, 0, Math.PI * 2);
+          ctx.fill();
+          break;
+          
+        case 3: // Яркие разноцветные звезды (5%)
+          const colors = [
+            `rgba(255, 180, 180, ${0.6 + Math.sin(timeOffset * 2) * 0.3})`, // розовая
+            `rgba(180, 255, 180, ${0.6 + Math.sin(timeOffset * 1.5) * 0.3})`, // зеленая
+            `rgba(180, 180, 255, ${0.6 + Math.sin(timeOffset * 1.8) * 0.3})`  // голубая
+          ];
+          ctx.fillStyle = colors[Math.floor(fract1 * 3)];
+          ctx.beginPath();
+          ctx.arc(baseX, baseY, 1.0 + fract2 * 1.0, 0, Math.PI * 2);
+          ctx.fill();
+          break;
+      }
     }
   }
 
