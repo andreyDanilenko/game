@@ -38,42 +38,32 @@ export class LevelSystem {
     return `${objective.type}_${objective.target}`;
   }
 
-//   loadLevel(levelId: number): LevelConfig {
-//     if (!LevelManifest[levelId]) {
-//       throw new Error(`Level ${levelId} not found`);
-//     }
+  loadLevel(levelId: number): LevelConfig {
+      if (!LevelManifest[levelId]) {
+      throw new Error(`Level ${levelId} not found`);
+      }
 
-//     this.currentLevelId = levelId;
-//     this.currentLevel = { ...LevelManifest[levelId] };
-//     this.initializeObjectives();
-    
-//     return this.currentLevel;
-//   }
-
-    loadLevel(levelId: number): LevelConfig {
-        if (!LevelManifest[levelId]) {
-        throw new Error(`Level ${levelId} not found`);
-        }
-
-        this.currentLevelId = levelId;
-        this.currentLevel = { ...LevelManifest[levelId] }; // ВАЖНО: создаем копию!
-        
-        // Сбрасываем прогресс целей для нового уровня
-        this.currentLevel.objectives = this.currentLevel.objectives.map(obj => ({
-        ...obj,
-        current: 0
-        }));
-        
-        this.initializeObjectives();
-        
-        return this.currentLevel;
-    }
+      this.currentLevelId = levelId;
+      this.currentLevel = { ...LevelManifest[levelId] }; // ВАЖНО: создаем копию!
+      
+      // Сбрасываем прогресс целей для нового уровня
+      this.currentLevel.objectives = this.currentLevel.objectives.map(obj => ({
+      ...obj,
+      current: 0
+      }));
+      
+      this.initializeObjectives();
+      
+      return this.currentLevel;
+  }
 
   getCurrentLevel(): LevelConfig {    
     return this.currentLevel;
   }
 
   updateObjectiveProgress(type: string, value: number): void {
+    console.log(type, value);
+    
     switch(type) {
       case 'star_collected':
         this.levelStats.starsCollected += value;

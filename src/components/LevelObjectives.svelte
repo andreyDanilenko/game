@@ -1,33 +1,13 @@
 <script lang="ts">
+import { objectives } from '../stores/levelStore';
 import Objective from './Objective.svelte';
-// import { LevelObjective } from './types';
 
- interface LevelObjective {
-  type: 'survive' | 'collect' | 'destroy' | 'reach_score';
-  target: number;
-  description: string;
-  current: number;
-}
+$: objectivesLevel = $objectives;
 
-  
-let levelObjectives: LevelObjective[] = [
-    {
-        type: 'collect',
-        target: 10,
-        current: 5,
-        description: 'Collect stars'
-    },
-    {
-        type: 'destroy',
-        target: 5, 
-        current: 5,
-        description: 'Destroy enemies'
-    }
-];
 </script>
 
 <div class="level-objectives">
-  {#each levelObjectives as objective (objective.type)}
+  {#each objectivesLevel as objective (objective.type)}
     <Objective {objective} />
   {/each}
 </div>

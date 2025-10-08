@@ -8,13 +8,13 @@ export const LevelManifest: Record<number, LevelConfig> = {
     description: "Освойтесь в космосе",
     background: "deep_space",
     gameSpeed: 1.0,
-    worldScale: 1.0,
+    worldScale: 1.5,
     duration: 15,
     music: 'music_level10',
     difficulty: 'easy',
     objectives: [
-      { type: 'survive', target: 15, description: "Выжить 15 секунд", current: 0 },
-      { type: 'reach_score', target: 100, description: "Набрать 100 очков", current: 0},
+      { type: 'survive', target: 15, description: "Выжить 30 секунд", current: 0 },
+      { type: 'reach_score', target: 500, description: "Набрать 500 очков", current: 0},
       { type: 'collect', target: 5, description: "Собрать 5 звезд", current: 0 },
       { type: 'destroy', target: 1, description: "Уничтожить 1 астероид", current: 0 }
     ],
@@ -26,16 +26,17 @@ export const LevelManifest: Record<number, LevelConfig> = {
     description: "Научитесь избегать препятствия",
     background: "deep_space",
     gameSpeed: 1.1,
-    worldScale: 1.1,
+    worldScale: 1.5,
     duration: 30,
     music: 'music_level9',
     difficulty: 'easy',
     objectives: [
       { type: 'survive', target: 30, description: "Выжить 30 секунд", current: 0 },
+      { type: 'reach_score', target: 700, description: "Набрать 700 очков", current: 0},
       { type: 'collect', target: 12, description: "Собрать 12 звезд", current: 0 },
       { type: 'destroy', target: 5, description: "Уничтожить 5 астероидов", current: 0 }
     ],
-    spawnSettings: { stars: 8, powerStars: 2, asteroids: 6, deathAsteroids: 1 }
+    spawnSettings: { stars: 8, powerStars: 2, asteroids: 8, deathAsteroids: 1 }
   },
   3: {
     id: 3,
@@ -44,14 +45,14 @@ export const LevelManifest: Record<number, LevelConfig> = {
     background: "nebula",
     gameSpeed: 1.0,
     worldScale: 1.5,
-    duration: 35,
+    duration: 40,
     music: 'music_level8',
     difficulty: 'easy',
     objectives: [
       { type: 'collect', target: 20, description: "Собрать 20 звезд", current: 0 },
-      { type: 'reach_score', target: 300, description: "Набрать 300 очков", current: 0 }
+      { type: 'reach_score', target: 1000, description: "Набрать 1000 очков", current: 0 }
     ],
-    spawnSettings: { stars: 10, powerStars: 2, asteroids: 5 }
+    spawnSettings: { stars: 10, powerStars: 2, asteroids: 10 }
   },
   4: {
     id: 4,
@@ -65,9 +66,9 @@ export const LevelManifest: Record<number, LevelConfig> = {
     difficulty: 'easy',
     objectives: [
       { type: 'survive', target: 40, description: "Выжить 40 секунд", current: 0 },
-      { type: 'collect', target: 15, description: "Собрать 15 звезд", current: 0 }
+      { type: 'collect', target: 140, description: "Собрать 140 звезд", current: 0 }
     ],
-    spawnSettings: { stars: 9, powerStars: 2, asteroids: 7, deathAsteroids: 2  }
+    spawnSettings: { stars: 19, powerStars: 2, asteroids: 7, deathAsteroids: 2  }
   },
   5: {
     id: 5,
@@ -76,14 +77,14 @@ export const LevelManifest: Record<number, LevelConfig> = {
     background: "nebula",
     gameSpeed: 1.1,
     worldScale: 1.7,
-    duration: 35,
+    duration: 50,
     music: 'music_level6',
     difficulty: 'easy',
     objectives: [
-      { type: 'destroy', target: 10, description: "Уничтожить 10 астероидов", current: 0 },
-      { type: 'collect', target: 18, description: "Собрать 18 звезд", current: 0 }
+      { type: 'destroy', target: 20, description: "Уничтожить 20 астероидов", current: 0 },
+      { type: 'collect', target: 100, description: "Собрать 100 звезд", current: 0 }
     ],
-    spawnSettings: { stars: 8, powerStars: 3, asteroids: 8 }
+    spawnSettings: { stars: 15, powerStars: 3, asteroids: 12 }
   },
   6: {
     id: 6, 
@@ -108,12 +109,12 @@ export const LevelManifest: Record<number, LevelConfig> = {
     background: "nebula",
     gameSpeed: 1.2,
     worldScale: 1.7,
-    duration: 45,
+    duration: 60,
     music: 'music_level4',
     difficulty: 'easy',
     objectives: [
-      { type: 'survive', target: 45, description: "Выжить 45 секунд", current: 0 },
-      { type: 'collect', target: 25, description: "Собрать 25 звезд", current: 0 },
+      { type: 'survive', target: 60, description: "Выжить 60 секунд", current: 0 },
+      { type: 'collect', target: 125, description: "Собрать 125 звезд", current: 0 },
       { type: 'destroy', target: 12, description: "Уничтожить 12 астероидов", current: 0 }
     ],
     spawnSettings: { stars: 11, powerStars: 3, asteroids: 10 }
@@ -127,15 +128,16 @@ export const LevelManifest: Record<number, LevelConfig> = {
     background: "asteroid_field",
     gameSpeed: 1.4,
     worldScale: 2.0,
-    duration: 50,
+    duration: 75,
     music: 'music_level3',
     difficulty: 'medium',
     objectives: [
-      { type: 'survive', target: 50, description: "Выжить 50 секунд", current: 0 },
-      { type: 'collect', target: 30, description: "Собрать 30 звезд", current: 0 },
-      { type: 'destroy', target: 18, description: "Уничтожить 18 астероидов", current: 0 }
+      { type: 'survive', target: 75, description: "Выжить 75 секунд", current: 0 },
+      { type: 'collect', target: 100, description: "Собрать 100 звезд", current: 0 },
+      { type: 'reach_score', target: 2000, description: "Набрать 2000 очков", current: 0 },
+      { type: 'destroy', target: 40, description: "Уничтожить 40 астероидов", current: 0 }
     ],
-    spawnSettings: { stars: 12, powerStars: 3, asteroids: 14 }
+    spawnSettings: { stars: 15, powerStars: 6, asteroids: 14 }
   },
   9: {
     id: 9,
@@ -150,7 +152,7 @@ export const LevelManifest: Record<number, LevelConfig> = {
     objectives: [
       { type: 'survive', target: 60, description: "Выжить 60 секунд", current: 0 },
       { type: 'reach_score', target: 800, description: "Набрать 800 очков", current: 0 },
-      { type: 'collect', target: 35, description: "Собрать 35 звезд", current: 0 }
+      { type: 'collect', target: 135, description: "Собрать 135 звезд", current: 0 }
     ],
     spawnSettings: { stars: 13, powerStars: 4, asteroids: 16 }
   },
@@ -167,10 +169,10 @@ export const LevelManifest: Record<number, LevelConfig> = {
     music: 'music_level1',
     difficulty: 'hard',
     objectives: [
-      { type: 'reach_score', target: 1200, description: "Набрать 1200 очков", current: 0 },
-      { type: 'collect', target: 40, description: "Собрать 40 звезд", current: 0 },
-      { type: 'destroy', target: 25, description: "Уничтожить 25 астероидов", current: 0 }
+      { type: 'reach_score', target: 3200, description: "Набрать 3200 очков", current: 0 },
+      { type: 'collect', target: 140, description: "Собрать 140 звезд", current: 0 },
+      { type: 'destroy', target: 145, description: "Уничтожить 145 астероидов", current: 0 }
     ],
-    spawnSettings: { stars: 15, powerStars: 4, asteroids: 18 }
+    spawnSettings: { stars: 10, powerStars: 4, asteroids: 18 }
   }
 };

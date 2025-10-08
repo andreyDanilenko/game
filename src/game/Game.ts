@@ -16,6 +16,7 @@ import { SmartAsteroid } from './objects/SmartAsteroid';
 
 import { playerState, screenData, screenState, statState } from '../stores/gameStore';
 import { gameEvents } from '../events/GameEvents';
+import { objectives } from '../stores/levelStore';
 
 export class Game {
   private canvas = document.getElementById('gameCanvas') as HTMLCanvasElement;
@@ -296,6 +297,8 @@ export class Game {
     this.levelSystem.updateObjectiveProgress('star_collected', starsCollected);
     this.levelSystem.updateObjectiveProgress('power_star_collected', powerStarsCollected);
     this.levelSystem.updateObjectiveProgress('score', starsScore + powerStarsScore);
+    // Пока врсменно
+    this.updateLevelUI()
   }
 
   // Метод сбора звезд в радиусе
@@ -346,10 +349,11 @@ export class Game {
   // Метод обновления интерфейса уровня
   private updateLevelUI(): void {
     const level = this.levelSystem.getCurrentLevel();
-    const progress = this.levelSystem.getLevelProgress();
-
+    // const progress = this.levelSystem.getLevelProgress();
     
-    // this.ui.updateLevelObjectives(level.objectives);
+    console.log(level.objectives);
+    
+    objectives.set(level.objectives);
     // this.ui.updateLevelInfo(level.name, progress);
   }
 
