@@ -14,7 +14,7 @@ export const LevelManifest: Record<number, LevelConfig> = {
     difficulty: 'easy',
     objectives: [
       { type: 'survive', target: 15, description: "Выжить 30 секунд", current: 0 },
-      { type: 'reach_score', target: 500, description: "Набрать 500 очков", current: 0},
+      { type: 'reach_score', target: 300, description: "Набрать 300 очков", current: 0},
       { type: 'collect', target: 5, description: "Собрать 5 звезд", current: 0 },
       { type: 'destroy', target: 1, description: "Уничтожить 1 астероид", current: 0 }
     ],
@@ -32,7 +32,7 @@ export const LevelManifest: Record<number, LevelConfig> = {
     difficulty: 'easy',
     objectives: [
       { type: 'survive', target: 30, description: "Выжить 30 секунд", current: 0 },
-      { type: 'reach_score', target: 700, description: "Набрать 700 очков", current: 0},
+      { type: 'reach_score', target: 500, description: "Набрать 500 очков", current: 0},
       { type: 'collect', target: 12, description: "Собрать 12 звезд", current: 0 },
       { type: 'destroy', target: 5, description: "Уничтожить 5 астероидов", current: 0 }
     ],
@@ -98,9 +98,9 @@ export const LevelManifest: Record<number, LevelConfig> = {
     difficulty: 'easy',
     objectives: [
       { type: 'survive', target: 30, description: "Выжить 30 секунд", current: 0 },
-      { type: 'reach_score', target: 400, description: "Набрать 400 очков", current: 0 }
+      { type: 'reach_score', target: 700, description: "Набрать 700 очков", current: 0 }
     ],
-    spawnSettings: { stars: 7, powerStars: 2, asteroids: 9, deathAsteroids: 2  }
+    spawnSettings: { stars: 10, powerStars: 2, asteroids: 9, deathAsteroids: 2  }
   },
   7: {
     id: 7,
