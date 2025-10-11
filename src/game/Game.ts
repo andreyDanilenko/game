@@ -263,43 +263,44 @@ export class Game {
 
   // Метод уничтожения объектов в радиусе
   private destroyObjectsInRadius(centerX: number, centerY: number, power: number): void {
-    const explosionRadius = 100 + (power * 3);
-    
-    // Уничтожение астероидов
-    const asteroidsToDestroy = this.entityManager.asteroids.filter(asteroid => {
-      const dx = asteroid.x - centerX;
-      const dy = asteroid.y - centerY;
-      const distance = Math.sqrt(dx * dx + dy * dy);
-      
-      if ((asteroid as any).immortal) return false; // <-- неуничтожаемый
+          const explosionRadius = 100 + (power * 3);
+          
+          // Уничтожение астероидов
+          const asteroidsToDestroy = this.entityManager.asteroids.filter(asteroid => {
+            const dx = asteroid.x - centerX;
+            const dy = asteroid.y - centerY;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            
+            if ((asteroid as any).immortal) return false; // <-- неуничтожаемый
 
-      if (distance <= explosionRadius) {
-        this.createExplosion(asteroid.x, asteroid.y, 15, '#ff6666');
-        return true;
-      }
-      return false;
-    });
+            if (distance <= explosionRadius) {
+              this.createExplosion(asteroid.x, asteroid.y, 15, '#ff6666');
+              return true;
+            }
+            return false;
+          });
 
-    this.asteroidsDestroyed += asteroidsToDestroy.length;
-    this.levelSystem.updateObjectiveProgress('asteroid_destroyed', asteroidsToDestroy.length);
-    
-    asteroidsToDestroy.forEach(asteroid => {
-      this.entityManager.removeEntity(ENTITY_TYPES.ASTEROIDS, asteroid);
-    });
-    
-    // Сбор звезд
-    const starsCollected = this.collectStarsInRadius(centerX, centerY, explosionRadius, ENTITY_TYPES.STARS, '#ffffff', 8, 15);
-    const powerStarsCollected = this.collectStarsInRadius(centerX, centerY, explosionRadius, ENTITY_TYPES.POWER_STARS, '#ff66ff', 12, 25);
-    
-    const starsScore = starsCollected * 15;
-    const powerStarsScore = powerStarsCollected * 25;
-    this.score += starsScore + powerStarsScore;
-    
-    this.levelSystem.updateObjectiveProgress('star_collected', starsCollected);
-    this.levelSystem.updateObjectiveProgress('power_star_collected', powerStarsCollected);
-    this.levelSystem.updateObjectiveProgress('score', starsScore + powerStarsScore);
-    // Пока врсменно
-    this.updateLevelUI()
+          this.asteroidsDestroyed += asteroidsToDestroy.length;
+          this.levelSystem.updateObjectiveProgress('asteroid_destroyed', asteroidsToDestroy.length);
+          
+          asteroidsToDestroy.forEach(asteroid => {
+            this.entityManager.removeEntity(ENTITY_TYPES.ASTEROIDS, asteroid);
+          });
+          
+          // Сбор звезд
+          const starsCollected = this.collectStarsInRadius(centerX, centerY, explosionRadius, ENTITY_TYPES.STARS, '#ffffff', 8, 15);
+          const powerStarsCollected = this.collectStarsInRadius(centerX, centerY, explosionRadius, ENTITY_TYPES.POWER_STARS, '#ff66ff', 12, 25);
+          
+          const starsScore = starsCollected * 15;
+          const powerStarsScore = powerStarsCollected * 25;
+          this.score += starsScore + powerStarsScore;
+          
+          this.levelSystem.updateObjectiveProgress('star_collected', starsCollected);
+          this.levelSystem.updateObjectiveProgress('power_star_collected', powerStarsCollected);
+          this.levelSystem.updateObjectiveProgress('score', starsScore + powerStarsScore);
+
+          const updatedObjectives = this.levelSystem.getCurrentLevel().objectives;
+          objectives.set(updatedObjectives);
   }
 
   // Метод сбора звезд в радиусе
@@ -705,13 +706,13 @@ export class Game {
     this.gameTime = 60;
     this.power = 0;
     this.asteroidsDestroyed = 0;
+
     this.gameWon = false;
     
     this.entityManager.clearEntities();
     this.player.x = 400;
     this.player.y = 300;
     this.player.armor = 3;
-    
     screenState.set('start');
   }
 
