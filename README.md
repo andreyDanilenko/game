@@ -1,5 +1,7 @@
 # Space Survival Game
 
+## DEMO: https://stellar-platypus-3d94c2.netlify.app/
+
 A space-themed survival game built with HTML5 Canvas and JavaScript using Object-Oriented Programming principles.
 
 ## Features
